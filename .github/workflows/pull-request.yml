@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.48.2-jammy
     env:
       ARGENT_X_ENVIRONMENT: "hydrogen"
       E2E_REPO: ${{ secrets.E2E_REPO }}
@@ -25,7 +27,7 @@ jobs:
       - uses: pnpm/action-setup@v4
         name: Install pnpm
         with:
-          # version: 9
+          version: 9
           run_install: false
 
       - name: Get pnpm store directory
