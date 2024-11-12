@@ -9,7 +9,7 @@ if (fs.existsSync(envPath)) {
 
 const commonConfig = {
   isProdTesting: process.env.ARGENT_X_ENVIRONMENT === "prod" ? true : false || "",
-  password: "MyP@ss3!" || "",
+  password: "MyP@ss3!",
   //accounts used for setup
   senderAddrs: process.env.E2E_SENDER_ADDRESSES?.split(",") || "",
   senderKeys: process.env.E2E_SENDER_PRIVATEKEYS?.split(",") || "",
