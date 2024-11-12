@@ -9,6 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ARGENT_X_ENVIRONMENT: "hydrogen"
+      E2E_REPO: ${{ secrets.E2E_REPO }}
+      E2E_REPO_TOKEN: ${{ secrets.E2E_REPO_TOKEN }}
+      E2E_REPO_OWNER: ${{ secrets.E2E_REPO_OWNER }}
+      E2E_REPO_RELEASE_NAME: ${{ secrets.E2E_REPO_RELEASE_NAME }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -38,3 +45,6 @@ jobs:
         run: pnpm install
       - name: Build demo-dapp-starknet
         run: pnpm run build
+      - name: Run e2e tests
+        run: pnpm run start & xvfb-run --auto-servernum pnpm test
+  

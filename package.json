@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "playwright test",
+    "test": "pnpm run --filter @demo-dapp-starket/e2e test",
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "prepare": "husky"
