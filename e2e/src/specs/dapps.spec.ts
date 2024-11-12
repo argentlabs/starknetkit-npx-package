@@ -15,7 +15,7 @@ test.describe("Dapps", () => {
 
   })
 
-  test.only("connect from testDapp", async ({ extension, browserContext }) => {
+  test("connect from testDapp", async ({ extension, browserContext }) => {
 
     //setup wallet
     await extension.wallet.newWalletOnboarding()
