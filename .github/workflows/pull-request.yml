@@ -47,5 +47,20 @@ jobs:
       - name: Build demo-dapp-starknet
         run: pnpm run build
       - name: Run e2e tests
-        run: pnpm run start & xvfb-run --auto-servernum pnpm test
+        run: |
+          pnpm run start & # Start the server in background
+          echo "Waiting for server to be ready..."
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Attempt $i: Server not ready yet..."
+            if [ $i -eq 30 ]; then
+              echo "Server failed to start"
+              exit 1
+            fi
+            sleep 1
+          done
+          xvfb-run --auto-servernum pnpm test
   
