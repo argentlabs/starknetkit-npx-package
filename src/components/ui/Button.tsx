@@ -1,7 +1,11 @@
-import { ButtonHTMLAttributes, FC } from "react"
+import { ButtonHTMLAttributes, FC, ReactNode } from "react"
+import { ChevronDown, ChevronRight } from "../icons/Chevron"
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   hideChevron?: boolean
+  selected?: boolean
+  leftIcon?: ReactNode
+  rightIcon?: ReactNode
 }
 
 const Button: FC<ButtonProps> = ({
@@ -9,6 +13,9 @@ const Button: FC<ButtonProps> = ({
   children,
   style,
   hideChevron,
+  selected,
+  leftIcon,
+  rightIcon,
   ...props
 }) => (
   <button
@@ -16,25 +23,19 @@ const Button: FC<ButtonProps> = ({
       ...style,
     }}
     {...props}
+    className={`${props.className} ${selected ? "selected" : ""} ${props.disabled ? "disabled" : ""}`}
     onClick={onClick}
   >
-    {children}
+    <div className="flex items-center gap-2">
+      {leftIcon}
+      {children}
+    </div>
 
-    {!hideChevron && (
-      <svg
-        className="chevron-right"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M19 9l-7 7-7-7"
-        />
-      </svg>
+    {(!hideChevron || rightIcon) && (
+      <>{selected ? <ChevronRight /> : <ChevronDown />}</>
     )}
+
+    {rightIcon && <div>{rightIcon}</div>}
   </button>
 )
 

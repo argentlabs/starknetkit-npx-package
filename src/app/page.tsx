@@ -1,23 +1,16 @@
 "use client"
 
 import { StarknetDapp } from "@/components/StarknetDapp"
-import { Flex } from "@/components/ui/Flex"
 import { connectors } from "@/connectors"
-import { CHAIN_ID } from "@/constants"
 import { mainnet, sepolia } from "@starknet-react/chains"
 import { publicProvider, StarknetConfig } from "@starknet-react/core"
-import { constants } from "starknet"
-
-/* TODO: update ui */
 
 export default function Home() {
-  const chains = [
-    CHAIN_ID === constants.NetworkName.SN_MAIN ? mainnet : sepolia,
-  ]
+  const chains = [mainnet, sepolia]
   const providers = publicProvider()
 
   return (
-    <Flex flexDirection="column" className="demo-dapp-container">
+    <div className="flex flex-col h-screen p-4 sm:p-5">
       {/* eslint-disable @typescript-eslint/no-explicit-any */}
       <StarknetConfig
         chains={chains}
@@ -28,6 +21,6 @@ export default function Home() {
         <StarknetDapp />
       </StarknetConfig>
       {/* eslint-enable @typescript-eslint/no-explicit-any */}
-    </Flex>
+    </div>
   )
 }

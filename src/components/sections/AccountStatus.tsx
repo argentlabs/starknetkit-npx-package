@@ -1,3 +1,4 @@
+import { toHexChainid } from "@/helpers/chainId"
 import {
   useAccount,
   useBalance,
@@ -6,19 +7,24 @@ import {
   useStarkProfile,
 } from "@starknet-react/core"
 import { FC } from "react"
-import { constants, num } from "starknet"
-import { Accordion } from "../ui/Accordion"
-import { Flex } from "../ui/Flex"
+import { constants } from "starknet"
+import { CopyIcon } from "../icons/CopyIcon"
 
-const Box: FC<{
+interface BoxProps {
   title: string
   value?: string
-}> = ({ title, value }) => (
-  <Flex flex={1} border="solid 1px #C8C8C8" borderRadius="8px" padding="8px">
-    <span style={{ fontWeight: "bold" }}>
-      {title}: {value || "-----"}
+  copy?: boolean
+  truncate?: boolean
+}
+
+const Box: FC<BoxProps> = ({ title, value, copy, truncate }) => (
+  <div className="flex flex-col rounded gap-2 overflow-hidden">
+    <span className="status-grid-item-title">{title}</span>
+    <span className={`status-grid-item-value ${truncate ? "truncate" : ""}`}>
+      {value || "-"}
+      {value && copy && <CopyIcon />}
     </span>
-  </Flex>
+  </div>
 )
 
 const AccountStatus = () => {
@@ -37,72 +43,43 @@ const AccountStatus = () => {
     address,
   })
 
-  const hexChainId =
-    typeof chainId === "bigint" ? num.toHex(chainId ?? 0) : null
+  const hexChainId = toHexChainid(chainId)
 
   return (
-    <Flex flexDirection="column" gap="24px">
-      <Accordion
-        isDefaultOpen
-        items={[
-          {
-            title: "Status",
-            content: (
-              <Flex flexDirection="column" gap="12px">
-                <Flex gap="12px">
-                  <Box
-                    title="Status"
-                    value={isConnected ? "Connected" : "Not connected"}
-                  />
-                  <Box title="Connector" value={connector?.name} />
-                </Flex>
-                <Flex gap="12px" width="100%">
-                  <Box
-                    title="Network"
-                    value={
-                      hexChainId
-                        ? constants.StarknetChainId.SN_SEPOLIA === hexChainId
-                          ? "Sepolia"
-                          : "Mainnet"
-                        : undefined
-                    }
-                  />
-                  {balance ? (
-                    <Box
-                      title="Eth Balance"
-                      value={
-                        balance && balance?.formatted.length > 7
-                          ? `${balance.formatted.slice(0, 5)} ETH`
-                          : `${balance?.formatted} ETH`
-                      }
-                    />
-                  ) : (
-                    <Box title="Eth Balance" value="----" />
-                  )}
-                </Flex>
-                <Accordion
-                  withBorder
-                  items={[
-                    {
-                      title: "StarknetID data",
-                      content: (
-                        <Flex flexDirection="column" gap="12px" padding="8px">
-                          <Box title="ID" value={starknetId} />
-                          <Box
-                            title="Avatar Url"
-                            value={starkProfile?.profilePicture}
-                          />
-                        </Flex>
-                      ),
-                    },
-                  ]}
-                />
-              </Flex>
-            ),
-          },
-        ]}
+    <>
+      <Box title="Status" value={isConnected ? "Connected" : "Not connected"} />
+      <Box
+        title="Connector"
+        value={isConnected ? connector?.name : undefined}
       />
-    </Flex>
+      <Box
+        title="Network"
+        value={
+          hexChainId
+            ? constants.StarknetChainId.SN_SEPOLIA === hexChainId
+              ? "Sepolia"
+              : "Mainnet"
+            : undefined
+        }
+      />
+      <Box
+        title="Eth Balance"
+        value={
+          balance
+            ? balance?.formatted.length > 7
+              ? `${balance.formatted.slice(0, 7)} ETH`
+              : `${balance?.formatted} ETH`
+            : "-"
+        }
+      />
+      <Box title="ID" value={starknetId} />
+      <Box
+        title="Avatar Url"
+        value={starkProfile?.profilePicture}
+        copy
+        truncate
+      />
+    </>
   )
 }
 
