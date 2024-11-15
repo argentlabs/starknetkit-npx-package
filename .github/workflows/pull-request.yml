@@ -69,8 +69,8 @@ jobs:
         with:
           name: test-artifacts
           path: |
-            packages/e2e/artifacts/playwright/
-            !packages/e2e/artifacts/playwright/*.webm
+            e2e/artifacts/playwright/
+            !e2e/artifacts/playwright/*.webm
           retention-days: 5
   
       - name: Upload blob report to GitHub Actions Artifacts
@@ -78,6 +78,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: all-blob-reports
-          path: packages/e2e/blob-report/
+          path: e2e/blob-report/
           retention-days: 5    
   
