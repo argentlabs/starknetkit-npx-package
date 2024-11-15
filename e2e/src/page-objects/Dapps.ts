@@ -81,7 +81,8 @@ export default class Dapps extends Navigation {
     await dapp.waitForTimeout(1000)
     await dapp.goto(dappUrl)
 
-    await dapp.getByRole('button', { name: 'Starknetkit Modal' }).click()
+    await dapp.getByRole('button', { name: 'Connection' }).click()
+   // await dapp.getByRole('button', { name: 'Starknetkit Modal' }).first().click()
     await expect(dapp.getByRole('button', { name: 'Argent X Argent X' })).toBeVisible()
     await dapp.getByRole('button', { name: 'Argent X Argent X' }).click()
     return dapp
