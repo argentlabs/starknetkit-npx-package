@@ -10,7 +10,7 @@ const streamPipeline = promisify(pipeline)
 export async function downloadGitHubRelease(version: string): Promise<void> {
   const owner = config.migRepoOwner
   const repo = config.migRepo
-  const tag = `@argent-x/extension@${version}`
+  const tag = `v${version}`
   const assetName = config.migReleaseName
   const token = config.migRepoToken
   const outputPath = `${config.migDir}${version}.zip`

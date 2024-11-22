@@ -72,7 +72,12 @@ export default class Dapps extends Navigation {
     ])
   }
   async requestConnectionFromDapp(
-    browserContext: ChromiumBrowserContext,
+    { browserContext,
+      starknetKitModal = false }:
+      {
+        browserContext: ChromiumBrowserContext,
+        starknetKitModal?: boolean
+      }
   ) {
     //open dapp page
     const dapp = await browserContext.newPage()
@@ -82,9 +87,13 @@ export default class Dapps extends Navigation {
     await dapp.goto(dappUrl)
 
     await dapp.getByRole('button', { name: 'Connection' }).click()
-   // await dapp.getByRole('button', { name: 'Starknetkit Modal' }).first().click()
-    await expect(dapp.getByRole('button', { name: 'Argent X Argent X' })).toBeVisible()
-    await dapp.getByRole('button', { name: 'Argent X Argent X' }).click()
+    if (starknetKitModal) {
+      await dapp.getByRole('button', { name: 'Starknetkit Modal' }).click()
+      await dapp.locator('#starknetkit-modal-container').getByRole('button', { name: 'Argent X Argent X' }).click()
+    } else {
+      await expect(dapp.locator('button :text-is("Argent X")')).toBeVisible()
+    }
+    await dapp.locator('button :text-is("Argent X")').click()
     return dapp
   }
 
