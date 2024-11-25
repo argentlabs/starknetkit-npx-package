@@ -19,8 +19,12 @@ interface BoxProps {
 
 const Box: FC<BoxProps> = ({ title, value, copy, truncate }) => (
   <div className="flex flex-col rounded gap-2 overflow-hidden">
-    <span className="status-grid-item-title">{title}</span>
-    <span className={`status-grid-item-value ${truncate ? "truncate" : ""}`}>
+    <span className="text-sm font-medium leading-4 text-left text-medium-grey text-color-dark-grey">
+      {title}
+    </span>
+    <span
+      className={`text-base font-medium leading-6 text-left ${truncate ? "truncate" : ""} font-size-[16px] ${!value ? "text-lavander-sky" : "text-color-white"}`}
+    >
       {value || "-"}
       {value && copy && <CopyIcon />}
     </span>
@@ -41,6 +45,8 @@ const AccountStatus = () => {
 
   const { data: starkProfile } = useStarkProfile({
     address,
+    useDefaultPfp: true,
+    enabled: true,
   })
 
   const hexChainId = toHexChainid(chainId)
@@ -69,7 +75,7 @@ const AccountStatus = () => {
             ? balance?.formatted.length > 7
               ? `${balance.formatted.slice(0, 7)} ETH`
               : `${balance?.formatted} ETH`
-            : "-"
+            : undefined
         }
       />
       <Box title="ID" value={starknetId} />

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { constants, stark } from "starknet"
 import { Button } from "../ui/Button"
 import { SectionLayout } from "./SectionLayout"
+import { SigningIcon } from "../icons/SigningIcon"
 
 const SignMessage = () => {
   const { account, address, chainId } = useAccount()
@@ -51,37 +52,46 @@ const SignMessage = () => {
   }
 
   return (
-    <SectionLayout sectionTitle="Signing">
-      <div className="flex flex-1 w-full" style={{ marginBottom: "16px" }}>
+    <SectionLayout sectionTitle="Signing" icon={<SigningIcon />}>
+      <div className="flex flex-1 w-full bg-raisin-black rounded-lg p-3">
         <form
-          className="flex flex-1 flex-col  w-full gap-3"
+          className="flex flex-1 flex-col w-full gap-4"
           onSubmit={(e) => {
             e.preventDefault()
             handleSignSubmit()
           }}
         >
+          <span className="text-base font-medium leading-6">Sign message</span>
           <textarea
             id="short-text"
             name="short-text"
-            placeholder="Short text"
-            className="w-full"
+            placeholder="Message"
+            className="w-full outline-none focus:border-white focus:text-white"
             value={shortText}
             style={{ height: "160px" }}
             onChange={(e) => setShortText(e.target.value)}
           />
 
-          <Button
-            type="submit"
-            style={{
-              maxWidth: "200px",
-              textAlign: "center",
-              display: "block",
-            }}
-            disabled={!shortText}
-            hideChevron
-          >
-            Submit
-          </Button>
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              style={{
+                fontSize: "14px",
+                alignItems: "center",
+                justifyContent: "center",
+                display: "flex",
+                lineHeight: "16px",
+                height: "36px",
+                maxWidth: "175px",
+                textAlign: "center",
+                width: "100%",
+              }}
+              disabled={!shortText}
+              hideChevron
+            >
+              Submit
+            </Button>
+          </div>
         </form>
       </div>
       <div className="flex column p-1 gap-3" style={{ flex: "1" }}>

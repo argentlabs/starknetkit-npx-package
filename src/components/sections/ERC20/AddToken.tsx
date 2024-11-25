@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button"
 import { useAccount, useWalletRequest } from "@starknet-react/core"
 import { SectionLayout } from "../SectionLayout"
+import { AddTokenIcon } from "@/components/icons/AddTokenIcon"
 
 const AddToken = () => {
   const { account, address } = useAccount()
@@ -24,7 +25,7 @@ const AddToken = () => {
   }
 
   return (
-    <SectionLayout sectionTitle="Add Token">
+    <SectionLayout sectionTitle="Add Token" icon={<AddTokenIcon />}>
       <div className="flex w-1/2 justify-start">
         <Button
           className="w-full"

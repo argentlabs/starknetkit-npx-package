@@ -49,7 +49,7 @@ const SendERC20 = () => {
   }
 
   return (
-    <div className="flex column gap-2">
+    <div className="flex w-full column gap-2">
       <Button
         className="w-full"
         onClick={handleTransferSubmit}

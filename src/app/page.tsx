@@ -10,17 +10,14 @@ export default function Home() {
   const providers = publicProvider()
 
   return (
-    <div className="flex flex-col h-screen p-4 sm:p-5">
-      {/* eslint-disable @typescript-eslint/no-explicit-any */}
+    <div className="flex flex-col h-screen">
       <StarknetConfig
         chains={chains}
         provider={providers}
-        /* TODO: wait for starknet-react to update Connector interface */
-        connectors={connectors as any}
+        connectors={connectors}
       >
         <StarknetDapp />
       </StarknetConfig>
-      {/* eslint-enable @typescript-eslint/no-explicit-any */}
     </div>
   )
 }

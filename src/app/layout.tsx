@@ -18,11 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main
-          style={{ height: "100dvh", display: "flex", flexDirection: "column" }}
-        >
-          {children}
-        </main>
+        <main className="flex flex-col h-dvh">{children}</main>
       </body>
     </html>
   )

@@ -1,6 +1,6 @@
 const ChevronRight = () => (
   <svg
-    className="chevron-right"
+    className="w-4 h-4 transition-transform duration-[200] -rotate-90"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -16,7 +16,7 @@ const ChevronRight = () => (
 
 const ChevronLeft = () => (
   <svg
-    className="chevron-left"
+    className="w-4 h-4transition-transform duration-[200] -rotate-270"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -32,7 +32,7 @@ const ChevronLeft = () => (
 
 const ChevronUp = () => (
   <svg
-    className="chevron-up"
+    className="w-4 h-4 transition-transform duration-[200] -rotate-180"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -48,7 +48,7 @@ const ChevronUp = () => (
 
 const ChevronDown = () => (
   <svg
-    className="chevron-down"
+    className="w-4 h-4 transition-transform duration-[200]"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"

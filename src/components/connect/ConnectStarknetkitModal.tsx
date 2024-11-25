@@ -1,6 +1,6 @@
 import { useConnect } from "@starknet-react/core"
-import { Button } from "../ui/Button"
 import { StarknetkitConnector, useStarknetkitConnectModal } from "starknetkit"
+import { Button } from "../ui/Button"
 
 const ConnectStarknetkitModal = () => {
   const { connectAsync, connectors } = useConnect()
@@ -11,12 +11,14 @@ const ConnectStarknetkitModal = () => {
 
   return (
     <Button
-      className="w-full"
+      className="w-full justify-start md:justify-center"
       onClick={async () => {
         const { connector } = await starknetkitConnectModal()
-        if (!connector) return // or throw error
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        await connectAsync({ connector: connector as any })
+        if (!connector) {
+          // or throw error
+          return
+        }
+        await connectAsync({ connector })
       }}
       hideChevron
     >

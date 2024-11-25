@@ -6,8 +6,11 @@ interface SectionButtonProps {
   disabled?: boolean
   section: Section
   selected: boolean
+  className?: string
   setSection: (
-    value?: ((prevState?: Section | undefined) => Section) | undefined,
+    value?:
+      | ((prevState?: Section | undefined) => Section | undefined)
+      | undefined,
   ) => void
 }
 
@@ -16,19 +19,21 @@ const SectionButton: FC<SectionButtonProps> = ({
   section,
   selected,
   setSection,
-}) => {
-  return (
-    <Button
-      selected={selected}
-      className={`sections-list-button ${disabled ? "disabled" : ""}`}
-      disabled={disabled}
-      onClick={() =>
-        setSection((prev?: Section) => (prev === section ? section : section))
-      }
-    >
-      {section}
-    </Button>
-  )
-}
+  className,
+}) => (
+  <Button
+    selected={selected}
+    className={`text-medium-grey justify-between ${disabled ? "disabled" : ""} ${selected ? "bg-raisin-black" : "bg-black"} 
+      ${className}`}
+    disabled={disabled}
+    onClick={() => {
+      setSection((prev?: Section | undefined) =>
+        prev === section ? undefined : section,
+      )
+    }}
+  >
+    {section}
+  </Button>
+)
 
 export { SectionButton }

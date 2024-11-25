@@ -24,10 +24,10 @@ const Connect = () => {
   return (
     <SectionLayout sectionTitle="Connection">
       <div className="flex column gap-3">
-        <div className="flex gap-3">
+        <div className="flex flex-col md:flex-row gap-3">
           <ConnectStarknetkitModal />
           <Button
-            className={`w-full ${!isConnected ? "disabled" : ""}`}
+            className={`w-full ${!isConnected ? "disabled" : ""} justify-start md:justify-center`}
             onClick={() => disconnect()}
             disabled={!isConnected}
             hideChevron
@@ -36,11 +36,11 @@ const Connect = () => {
             Disconnect
           </Button>
         </div>
-        <div className="flex column w-full p-3 bg-[#262933] gap-5 rounded-xl">
-          <span className="starknet-react-connectors-title">
+        <div className="flex column w-full p-3 border border-solid border-raisin-black gap-5 rounded-xl">
+          <span className="text-base font-medium leading-6 text-left">
             Starknet-react connectors
           </span>
-          <div className="connectors-grid">
+          <div className="grid grid-cols-connectors-grid gap-4">
             {connectors.map((connector) => {
               const icon =
                 typeof connector.icon === "string"

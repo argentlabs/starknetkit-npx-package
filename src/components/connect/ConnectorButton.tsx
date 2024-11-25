@@ -17,7 +17,7 @@ const ConnectorButton: FC<{ connector: Connector; icon: ReactNode }> = ({
       onClick={async () => {
         await connectAsync({ connector })
       }}
-      className="connector"
+      className="bg-raisin-black h-10 text-sm leading-4 font-medium gap-2 justify-center hover:#262933"
       hideChevron
     >
       <div className="flex items-center gap-2">

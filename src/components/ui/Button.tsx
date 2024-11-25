@@ -23,7 +23,7 @@ const Button: FC<ButtonProps> = ({
       ...style,
     }}
     {...props}
-    className={`${props.className} ${selected ? "selected" : ""} ${props.disabled ? "disabled" : ""}`}
+    className={`${props.className} ${selected ? "selected" : ""} ${props.disabled ? "disabled" : ""} hover:bg-charcoal`}
     onClick={onClick}
   >
     <div className="flex items-center gap-2">
