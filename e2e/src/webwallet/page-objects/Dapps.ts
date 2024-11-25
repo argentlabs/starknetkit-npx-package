@@ -7,8 +7,9 @@ import SapoEmailClient from "../shared/src/emailClient"
 import config from "../config"
 type DappUrl = 'http://localhost:3000/'
 let mailClient: SapoEmailClient
-export default class Dapps extends Navigation {
 
+console.log(config.validLogin.email, config.emailPassword)
+export default class Dapps extends Navigation {
   constructor(page: Page) {
     super(page)
     mailClient = new SapoEmailClient(config.validLogin.email, config.emailPassword);
