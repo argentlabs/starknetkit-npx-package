@@ -17,6 +17,9 @@ jobs:
       E2E_REPO_TOKEN: ${{ secrets.E2E_REPO_TOKEN }}
       E2E_REPO_OWNER: ${{ secrets.E2E_REPO_OWNER }}
       E2E_REPO_RELEASE_NAME: ${{ secrets.E2E_REPO_RELEASE_NAME }}
+      WW_EMAIL: ${{ secrets.WW_EMAIL }}
+      WW_LOGIN_PASSWORD: ${{ secrets.WW_LOGIN_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -62,7 +65,7 @@ jobs:
             fi
             sleep 1
           done
-          xvfb-run --auto-servernum pnpm test
+          xvfb-run --auto-servernum pnpm test:webwallet
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         if: always()

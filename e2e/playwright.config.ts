@@ -1,5 +1,5 @@
 import type { PlaywrightTestConfig } from "@playwright/test"
-import config from "./src/config"
+import config from "./config"
 
 const playwrightConfig: PlaywrightTestConfig = {
   projects: [
@@ -13,7 +13,22 @@ const playwrightConfig: PlaywrightTestConfig = {
       },
       timeout: config.isCI ? 5 * 60e3 : 1 * 60e3,
       expect: { timeout: 2 * 60e3 }, // 2 minute
-      testDir: "./src/specs",
+      testDir: "./src/argent-x/specs",
+      testMatch: /\.spec.ts$/,
+      retries: config.isCI ? 1 : 0,
+      outputDir: config.artifactsDir,
+    },
+    {
+      name: "WebWallet",
+      use: {
+        trace: "retain-on-failure",
+        actionTimeout: 120 * 1000, // 2 minute
+        permissions: ["clipboard-read", "clipboard-write"],
+        screenshot: "only-on-failure",
+      },
+      timeout: config.isCI ? 5 * 60e3 : 1 * 60e3,
+      expect: { timeout: 2 * 60e3 }, // 2 minute
+      testDir: "./src/webwallet/specs",
       testMatch: /\.spec.ts$/,
       retries: config.isCI ? 1 : 0,
       outputDir: config.artifactsDir,
@@ -29,7 +44,7 @@ const playwrightConfig: PlaywrightTestConfig = {
   forbidOnly: config.isCI,
   outputDir: config.artifactsDir,
   preserveOutput: "failures-only",
-  globalTeardown: "./src/utils/global.teardown.ts",
+ // globalTeardown: "./src/utils/global.teardown.ts",
 }
 
 export default playwrightConfig
