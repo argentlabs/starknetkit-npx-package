@@ -133,7 +133,7 @@ jobs:
         with:
           name: test-artifacts
           path: |
-            e2e/artifacts/playwright/
+            e2e/src/webwallet/artifacts/playwright/
             !e2e/artifacts/playwright/*.webm
           retention-days: 5
           
@@ -202,7 +202,7 @@ jobs:
         with:
           name: test-artifacts
           path: |
-            e2e/artifacts/playwright/
+            e2e/src/argent-x/artifacts/playwright/
             !e2e/artifacts/playwright/*.webm
           retention-days: 5
        
