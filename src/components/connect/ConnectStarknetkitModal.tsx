@@ -7,6 +7,7 @@ const ConnectStarknetkitModal = () => {
 
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
     connectors: connectors as StarknetkitConnector[],
+    modalTheme: "dark",
   })
 
   return (
