@@ -136,14 +136,6 @@ jobs:
             e2e/artifacts/playwright/
             !e2e/artifacts/playwright/*.webm
           retention-days: 5
-    
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-blob-reports
-          path: e2e/blob-report/
-          retention-days: 5       
           
   test-argentX:
     runs-on: ubuntu-latest
@@ -213,11 +205,4 @@ jobs:
             e2e/artifacts/playwright/
             !e2e/artifacts/playwright/*.webm
           retention-days: 5
-    
-      - name: Upload blob report to GitHub Actions Artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-blob-reports
-          path: e2e/blob-report/
-          retention-days: 5        
+       
