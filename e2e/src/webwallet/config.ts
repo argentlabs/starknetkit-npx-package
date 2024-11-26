@@ -1,7 +1,7 @@
 import path from "path"
 import dotenv from "dotenv"
 import fs from "fs"
-import commonConfig from "./shared/config"
+import commonConfig from "../shared/config"
 
 const envPath = path.resolve(__dirname, ".env")
 if (fs.existsSync(envPath)) {

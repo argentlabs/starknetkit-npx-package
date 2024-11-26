@@ -3,7 +3,7 @@ import {
   isKeepArtifacts,
   keepVideos,
   saveHtml,
-} from "./shared/cfg/test"
+} from "../shared/cfg/test"
 
 import {
   BrowserContext,

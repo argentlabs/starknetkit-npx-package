@@ -7,7 +7,7 @@ import {
   TransactionFinalityStatus,
   num,
 } from "starknet"
-import commonConfig from "../config"
+import commonConfig from "../../../config"
 import { expect } from "@playwright/test"
 import { logInfo, sleep } from "./common"
 
@@ -23,16 +23,27 @@ const isEqualAddress = (a?: string, b?: string) => {
   return false
 }
 
-export type TokenSymbol = "ETH" | "WBTC" | "STRK" | "SWAY" | "USDC" | "DAI"
+export type TokenSymbol =
+  | "ETH"
+  | "WBTC"
+  | "STRK"
+  | "SWAY"
+  | "USDC"
+  | "DAI"
+  | "ádfas"
 export type TokenName =
   | "Ethereum"
   | "Wrapped BTC"
   | "Starknet"
   | "Standard Weighted Adalian Yield"
-  | "USD Coin"
   | "DAI"
+  | "USD Coin (Fake)"
 export type FeeTokens = "ETH" | "STRK"
 export interface AccountsToSetup {
+  assets: {
+    token: TokenSymbol
+    balance: number
+  }[]
   deploy?: boolean
   feeToken?: FeeTokens
 }
@@ -74,7 +85,11 @@ tokenAddresses.set("SWAY", {
   address: "0x0030058F19Ed447208015F6430F0102e8aB82D6c291566D7E73fE8e613c3D2ed",
   decimals: 18,
 })
-
+tokenAddresses.set("USDC", {
+  name: "USD Coin (Fake)",
+  address: "0x07ab0b8855a61f480b4423c46c32fa7c553f0aac3531bbddaa282d86244f7a23",
+  decimals: 6,
+})
 export const getTokenInfo = (tkn: string) => {
   const tokenInfo = tokenAddresses.get(tkn)
   if (!tokenInfo) {
@@ -113,8 +128,7 @@ const getAccount = async (amount: string, token: TokenSymbol) => {
       parseFloat(initialBalance) * Math.pow(10, 18)
     if (initialBalanceFormatted < parseInt(amount)) {
       log.push(
-        `${
-          commonConfig.senderAddrs![randomAccountPosition]
+        `${commonConfig.senderAddrs![randomAccountPosition]
         } Not enough balance ${initialBalanceFormatted} ${token} < ${amount}`,
       )
     } else {
@@ -140,9 +154,9 @@ const isTXProcessed = async (txHash: string) => {
     txStatusResponse = await provider.getTransactionStatus(txHash)
     if (
       txStatusResponse.finality_status ===
-        TransactionFinalityStatus.ACCEPTED_ON_L2 ||
+      TransactionFinalityStatus.ACCEPTED_ON_L2 ||
       txStatusResponse.finality_status ===
-        TransactionFinalityStatus.ACCEPTED_ON_L1
+      TransactionFinalityStatus.ACCEPTED_ON_L1
     ) {
       txProcessed = true
     } else {
@@ -177,6 +191,7 @@ const getTXData = async (txHash: string) => {
   }
   return { nodeUpdated, txData }
 }
+
 export async function transferTokens(
   amount: number,
   to: string,
@@ -216,7 +231,7 @@ export async function transferTokens(
       }
 
       console.error(
-        `[Failed to place TX] ${tx.transaction_hash} ${txStatusResponse}`,
+        `[Failed to place TX] ${tx.transaction_hash} ${JSON.stringify(txStatusResponse)}`,
       )
     } catch (e) {
       if (e instanceof Error) {
@@ -234,7 +249,10 @@ export async function transferTokens(
   return null
 }
 
-async function getBalance(accountAddress: string, token: TokenSymbol = "ETH") {
+export async function getBalance(
+  accountAddress: string,
+  token: TokenSymbol = "ETH",
+) {
   const tokenInfo = getTokenInfo(token)
   logInfo({ op: "getBalance", accountAddress, token, tokenInfo })
   const balanceOfCall = {

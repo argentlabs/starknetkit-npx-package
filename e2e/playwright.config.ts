@@ -44,7 +44,7 @@ const playwrightConfig: PlaywrightTestConfig = {
   forbidOnly: config.isCI,
   outputDir: config.artifactsDir,
   preserveOutput: "failures-only",
- // globalTeardown: "./src/utils/global.teardown.ts",
+  globalTeardown: "./src/shared/cfg/global.teardown.ts",
 }
 
 export default playwrightConfig

@@ -5,6 +5,9 @@ on:
       - develop
       - main
   pull_request:
+env:
+  PNPM_VERSION: 9
+  NODE_VERSION: 20.x
 
 jobs:
   build:
@@ -32,6 +35,12 @@ jobs:
         name: Install pnpm
         with:
           run_install: false
+          version: ${{ env.PNPM_VERSION }}
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"    
 
       - name: Get pnpm store directory
         shell: bash
@@ -48,8 +57,58 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
       - name: Build demo-dapp-starknet
         run: pnpm run build
+
+      - name: Use Cache
+        uses: actions/cache@v4
+        with:
+          path: ./*
+          key: ${{ github.sha }}  
+      
+     
+  test-webwallet:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.48.2-jammy
+    needs: [build]
+    env:
+      ARGENT_X_ENVIRONMENT: "hydrogen"
+      
+      WW_EMAIL: ${{ secrets.WW_EMAIL }}
+      WW_LOGIN_PASSWORD: ${{ secrets.WW_LOGIN_PASSWORD }}
+      EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Restore pnpm cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Restore cached build
+        uses: actions/cache/restore@v4
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      
       - name: Run e2e tests
         run: |
           pnpm run start & # Start the server in background
@@ -67,6 +126,7 @@ jobs:
             sleep 1
           done
           xvfb-run --auto-servernum pnpm test:webwallet
+        
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         if: always()
@@ -76,12 +136,88 @@ jobs:
             e2e/artifacts/playwright/
             !e2e/artifacts/playwright/*.webm
           retention-days: 5
-  
+    
       - name: Upload blob report to GitHub Actions Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: all-blob-reports
           path: e2e/blob-report/
-          retention-days: 5    
-  
+          retention-days: 5       
+          
+  test-argentX:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.48.2-jammy
+    needs: [build]
+    env:
+      ARGENT_X_ENVIRONMENT: "hydrogen"
+      E2E_REPO: ${{ secrets.E2E_REPO }}
+      E2E_REPO_TOKEN: ${{ secrets.E2E_REPO_TOKEN }}
+      E2E_REPO_OWNER: ${{ secrets.E2E_REPO_OWNER }}
+      E2E_REPO_RELEASE_NAME: ${{ secrets.E2E_REPO_RELEASE_NAME }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: ${{ env.PNPM_VERSION }}
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Restore pnpm cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Restore cached build
+        uses: actions/cache/restore@v4
+        with:
+          path: ./*
+          key: ${{ github.sha }}
+      
+      - name: Run e2e tests
+        run: |
+          pnpm run start & # Start the server in background
+          echo "Waiting for server to be ready..."
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Attempt $i: Server not ready yet..."
+            if [ $i -eq 30 ]; then
+              echo "Server failed to start"
+              exit 1
+            fi
+            sleep 1
+          done
+          xvfb-run --auto-servernum pnpm test:argentx
+        
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-artifacts
+          path: |
+            e2e/artifacts/playwright/
+            !e2e/artifacts/playwright/*.webm
+          retention-days: 5
+    
+      - name: Upload blob report to GitHub Actions Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: all-blob-reports
+          path: e2e/blob-report/
+          retention-days: 5        
