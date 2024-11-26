@@ -12,7 +12,7 @@ const commonConfig = {
   //accounts used for setup
   senderAddrs: process.env.E2E_SENDER_ADDRESSES?.split(",") || "",
   senderKeys: process.env.E2E_SENDER_PRIVATEKEYS?.split(",") || "",
-  destinationAddress: process.env.E2E_SENDER_ADDRESSES?.split(",")[0] || "", //used as transfers destination
+  destinationAddress: process.env.E2E_SENDER_ADDRESSES?.split(",")[0] ||"", //used as transfers destination
   // urls
   rpcUrl: process.env.ARGENT_SEPOLIA_RPC_URL || "",
   beAPIUrl:
@@ -20,7 +20,7 @@ const commonConfig = {
       ? ""
       : process.env.ARGENT_API_BASE_URL || "",
   viewportSize: { width: 360, height: 800 },
-  artifactsDir: path.resolve(__dirname, "../artifacts/playwright"),
+  artifactsDir: path.resolve(__dirname, "./artifacts/playwright"),
   isCI: Boolean(process.env.CI),
   migDir: path.join(__dirname, "../../e2e/argent-x-dist/"),
   distDir: path.join(__dirname, "../../extension/dist/"),
@@ -57,20 +57,20 @@ const extensionProdConfig = {
   testSeed3: "",
   testSeed4: "",
   senderSeed: process.env.E2E_SENDER_SEED || "",
-  account1Seed2: "",
-  account1Seed3: "",
-  spokCampaignName: "",
-  spokCampaignUrl: "",
-  guardianEmail: "",
+  account1Seed2:"",
+  account1Seed3:"",
+  spokCampaignName:"",
+  spokCampaignUrl:"",
+  guardianEmail:"",
   useStrkAsFeeToken: "false",
   skipTXTests: "true",
-  accountsToImport: "",
-  accountToImportAndTx: "",
-  qaUtilsURL: "",
-  qaUtilsAuthToken: "",
+  accountsToImport:"",
+  accountToImportAndTx:"",
+  qaUtilsURL:"",
+  qaUtilsAuthToken:"",
   initialBalanceMultiplier: 1,
-  migAccountAddress: "",
-  migVersions: "",
+  migAccountAddress:"",
+  migVersions:"",
 }
 
 const config = commonConfig.isProdTesting

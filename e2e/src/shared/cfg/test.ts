@@ -8,7 +8,7 @@ import { Page, TestInfo } from "@playwright/test"
 import { logInfo } from "../src/common"
 export const artifactsDir = path.resolve(
   __dirname,
-  "../../artifacts/playwright",
+  "../../../artifacts/playwright",
 )
 export const reportsDir = path.resolve(__dirname, "../../artifacts/reports")
 export const isCI = Boolean(process.env.CI)
