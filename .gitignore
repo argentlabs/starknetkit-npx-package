@@ -48,4 +48,4 @@ playwright-report*
 artifacts
 argent-x-dist
 
-/e2e/node_modules
+/e2e/node_modules/*
