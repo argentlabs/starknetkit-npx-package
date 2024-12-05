@@ -47,3 +47,5 @@ playwright-report*
 .eslintcache
 artifacts
 argent-x-dist
+
+/e2e/node_modules

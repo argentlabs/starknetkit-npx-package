@@ -6,14 +6,13 @@ const HeaderConnectButton = () => {
 
   const { starknetkitConnectModal } = useStarknetkitConnectModal({
     connectors: connectors as StarknetkitConnector[],
+    modalTheme: "dark",
   })
 
   return (
     <>
       <button
-        style={{
-          background: "linear-gradient(to bottom right, #EC796B, #D672EF)",
-        }}
+        className="px-x md:px-12 bg-gradient-to-r from-nebula-from to-nebula-to text-white rounded-lg"
         onClick={async () => {
           const { connector } = await starknetkitConnectModal()
           if (!connector) {

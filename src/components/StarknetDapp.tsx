@@ -11,6 +11,7 @@ import { Network } from "./sections/Network/Network"
 import { SectionButton } from "./sections/SectionButton"
 import { Section } from "./sections/types"
 import { GithubLogo } from "./icons/GithubLogo"
+import { SectionLayout } from "./sections/SectionLayout"
 
 const StarknetDapp = () => {
   const [section, setSection] = useState<Section | undefined>(undefined)
@@ -41,6 +42,13 @@ const StarknetDapp = () => {
       <div className="flex p-5 gap-3  md:py-[56px] md:px-[116px]  flex-1 h-full">
         <div className="flex flex-col md:flex-row w-full gap-4 md:gap-20 lg:gap-[130px] lg:max-w-[1178px] lg:mx-auto">
           <div className="flex w-full column gap-3 md:max-w-[362px]">
+            <SectionButton
+              section="Status"
+              setSection={setSection}
+              selected={section === "Status"}
+              className={`md:hidden ${!section ? "md:flex" : section === "Status" ? "flex" : "hidden"}`}
+            />
+
             <SectionButton
               section="Connection"
               setSection={setSection}
@@ -78,6 +86,13 @@ const StarknetDapp = () => {
           </div>
 
           <div className="flex flex-1 w-full">
+            {section === "Status" && (
+              <SectionLayout sectionTitle="Status">
+                <div className="w-full grid gap-5 grid-cols-2 ">
+                  <AccountStatus />
+                </div>
+              </SectionLayout>
+            )}
             {section === "Connection" && <Connect />}
             {section === "Transactions" && <Transactions />}
             {section === "Signing" && <SignMessage />}
@@ -92,7 +107,7 @@ const StarknetDapp = () => {
         target="_blank"
         rel="noreferrer"
       >
-        <div className="flex items-center cursor-pointer w-full justify-center md:justify-end p-5 md:py-10 md:px-[116px] text-lavander-sky gap-2">
+        <div className="flex items-center cursor-pointer w-full justify-center p-5 md:py-10 md:px-[116px] text-lavander-sky gap-2">
           <GithubLogo />
           Github
         </div>

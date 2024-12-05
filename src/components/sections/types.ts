@@ -1,4 +1,5 @@
 export type Section =
+  | "Status"
   | "Connection"
   | "Transactions"
   | "Signing"

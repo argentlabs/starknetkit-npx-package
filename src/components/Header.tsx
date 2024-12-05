@@ -5,7 +5,7 @@ import { AvatarIcon } from "./icons/AvatarIcon"
 import { LogoIcon } from "./icons/LogoIcon"
 import { WalletIcon } from "./icons/WalletIcon"
 import { ExternalIcon } from "./icons/ExternalIcon"
-import { HeaderConnectButton } from "@/HeaderConnectButton"
+import { HeaderConnectButton } from "@/components/HeaderConnectButton"
 import Image from "next/image"
 
 const Header = () => {
@@ -35,7 +35,7 @@ const Header = () => {
             <div className="flex flex-1 w-full" />
 
             {isConnected && (
-              <div className="flex border-col rounded-md md:rounded-lg gap-3 p-2 md:p-3 border-2 border-solid border-charcoal font-medium text-sm md:text-base text-nowrap">
+              <div className="flex border-col rounded-md md:rounded-lg gap-3 p-2 md:p-3 border border-solid border-charcoal font-medium text-sm md:text-base text-nowrap">
                 <div className="hidden md:flex items-center gap-2">
                   <WalletIcon />
                   {balance
@@ -44,7 +44,7 @@ const Header = () => {
                       : `${balance?.formatted} ETH`
                     : "0 ETH"}
                 </div>
-                <div className="border border-solid border-l-[1px] border-charcoal -my-1 mx-0  hidden md:flex" />
+                <div className="border-solid border-l-[1px] border-charcoal -my-1 mx-0  hidden md:flex" />
                 <div
                   className="flex cursor-pointer items-center gap-2"
                   onClick={() =>
