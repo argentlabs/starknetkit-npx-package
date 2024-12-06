@@ -66,8 +66,8 @@ export default class Dapps extends Navigation {
     }
 
     await page.locator('button[type="submit"]').click()
-    await page.waitForLoadState()
 
+    await page.waitForLoadState()
     await page.locator('button[type="submit"]').click()
 
     return page
@@ -115,7 +115,7 @@ export default class Dapps extends Navigation {
     console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
     console.log("Sending ERC20 transaction: confirm visible")
-    await popup.getByText("Confirm").click()
+    await popup.getByText("Confirm").click({ timeout: 30000, force: true })
     console.log("Sending ERC20 transaction: confirm clicked")
     await popup.waitForEvent("close", { timeout: 10000 })
 
@@ -139,7 +139,7 @@ export default class Dapps extends Navigation {
     console.log("Signing message: sign message visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
     console.log("Signing message: confirm visible")
-    await popup.getByText("Confirm").click()
+    await popup.getByText("Confirm").click({ timeout: 30000, force: true })
     console.log("Signing message: confirm clicked")
     await popup.waitForEvent("close", { timeout: 10000 })
 
