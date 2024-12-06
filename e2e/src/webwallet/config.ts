@@ -14,9 +14,11 @@ const config = {
     password: process.env.WW_LOGIN_PASSWORD!,
   },
   emailPassword: process.env.EMAIL_PASSWORD!,
-  acc_destination: commonConfig.destinationAddress! || '',
-  vw_acc_addr: process.env.VW_ACC_ADDR! || '',
-  url: "https://web.argent.xyz",
+  acc_destination: commonConfig.destinationAddress! || "",
+  vw_acc_addr: process.env.VW_ACC_ADDR! || "",
+  url: commonConfig.isProdTesting
+    ? "https://web.argent.xyz"
+    : "https://web-v2.hydrogen.argent47.net",
   ...commonConfig,
 }
 
