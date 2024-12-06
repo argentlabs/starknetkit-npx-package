@@ -105,13 +105,18 @@ export default class Dapps extends Navigation {
   }) {
     const popupPromise = dapp.waitForEvent("popup")
     const dialogPromise = dapp.waitForEvent("dialog")
+    console.log("Sending ERC20 transaction")
     await dapp.locator('button :text-is("Transactions")').click()
     await dapp.locator(`button :text-is("Send ${type}")`).click()
+    console.log("Sending ERC20 transaction: send clicked")
 
     const popup = await popupPromise
     await expect(popup.getByText("Review transaction")).toBeVisible()
+    console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
+    console.log("Sending ERC20 transaction: confirm visible")
     await popup.locator('button[type="submit"]').click()
+    console.log("Sending ERC20 transaction: confirm clicked")
     await popup.waitForEvent("close", { timeout: 10000 })
 
     const dialog = await dialogPromise
