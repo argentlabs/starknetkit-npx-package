@@ -103,14 +103,18 @@ export default class Dapps extends Navigation {
     dapp: Page
     type: "ERC20" | "Multicall"
   }) {
-    const popupPromise = dapp.waitForEvent("popup")
+    const popupPromise = Promise.all([
+      dapp.waitForEvent("popup"),
+      dapp.frameLocator("iframe"),
+    ])
+
     const dialogPromise = dapp.waitForEvent("dialog")
     console.log("Sending ERC20 transaction")
     await dapp.locator('button :text-is("Transactions")').click()
     await dapp.locator(`button :text-is("Send ${type}")`).click()
     console.log("Sending ERC20 transaction: send clicked")
 
-    const popup = await popupPromise
+    const [popup] = await popupPromise
     await expect(popup.getByText("Review transaction")).toBeVisible()
     console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
@@ -129,12 +133,15 @@ export default class Dapps extends Navigation {
 
   async signMessage({ dapp }: { dapp: Page }) {
     console.log("Signing message")
-    const popupPromise = dapp.waitForEvent("popup")
+    const popupPromise = Promise.all([
+      dapp.waitForEvent("popup"),
+      dapp.frameLocator("iframe"),
+    ])
     await dapp.locator('button :text-is("Signing")').click()
     await dapp.locator("[name=short-text]").fill("some message to sign")
     await dapp.locator('button[type="submit"]').click()
 
-    const popup = await popupPromise
+    const [popup] = await popupPromise
     await expect(popup.getByText("Sign Message")).toBeVisible()
     console.log("Signing message: sign message visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
