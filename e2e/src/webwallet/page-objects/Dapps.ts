@@ -3,18 +3,18 @@ import { ICredentials } from "./Login"
 import Navigation from "./Navigation"
 import { artifactsDir } from "../../shared/cfg/test"
 import { randomUUID } from "crypto"
-/* import SapoEmailClient from "../../shared/src/SapoEmailClient"
-import config from "../config" */
+import SapoEmailClient from "../../shared/src/SapoEmailClient"
+import config from "../config"
 const dappUrl = "http://localhost:3000/"
-//let mailClient: SapoEmailClient
+let mailClient: SapoEmailClient
 
 export default class Dapps extends Navigation {
   constructor(page: Page) {
     super(page)
-    /* mailClient = new SapoEmailClient(
+    mailClient = new SapoEmailClient(
       config.validLogin.email,
       config.emailPassword,
-    ) */
+    )
   }
 
   async requestConnectionFromDapp({
@@ -35,7 +35,7 @@ export default class Dapps extends Navigation {
     if (useStarknetKitModal) {
       await dApp.getByRole("button", { name: "Starknetkit Modal" }).click()
       const popup = await this.handlePopup(dApp, credentials, newAccount)
-      //await this.verifyEmailInPopup(popup, credentials.email)
+      await this.verifyEmailInPopup(popup, credentials.email)
       await popup.locator('button[type="submit"]').click()
     } else {
       const pagePromise = dApp.context().waitForEvent("page")
@@ -54,7 +54,7 @@ export default class Dapps extends Navigation {
   ) {
     await page.locator("[name=email]").fill(credentials.email)
     await page.locator('button[type="submit"]').click()
-    const pin = "1111111" //await mailClient.getPin()
+    const pin = await mailClient.getPin()
     console.log("PIN:", pin)
     await page.locator('[id^="pin-input"]').first().click()
     await page.locator('[id^="pin-input"]').first().fill(pin!)
