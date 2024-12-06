@@ -115,10 +115,11 @@ export default class Dapps extends Navigation {
     console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
     console.log("Sending ERC20 transaction: confirm visible")
-    await popup.locator('button[type="submit"]').click()
+    await popup.getByText("Confirm").click()
     console.log("Sending ERC20 transaction: confirm clicked")
     await popup.waitForEvent("close", { timeout: 10000 })
 
+    console.log("Signing message: wait for dialog")
     const dialog = await dialogPromise
     expect(dialog.message()).toContain("Transaction sent")
     await dialog.accept()
@@ -127,6 +128,7 @@ export default class Dapps extends Navigation {
   }
 
   async signMessage({ dapp }: { dapp: Page }) {
+    console.log("Signing message")
     const popupPromise = dapp.waitForEvent("popup")
     await dapp.locator('button :text-is("Signing")').click()
     await dapp.locator("[name=short-text]").fill("some message to sign")
@@ -134,10 +136,14 @@ export default class Dapps extends Navigation {
 
     const popup = await popupPromise
     await expect(popup.getByText("Sign Message")).toBeVisible()
+    console.log("Signing message: sign message visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
-    await popup.locator('button[type="submit"]').click()
+    console.log("Signing message: confirm visible")
+    await popup.getByText("Confirm").click()
+    console.log("Signing message: confirm clicked")
     await popup.waitForEvent("close", { timeout: 10000 })
 
+    console.log("Signing message: wait for ui")
     await expect(dapp.getByText("Signer", { exact: true })).toBeVisible()
     await expect(dapp.getByText("Cosigner", { exact: true })).toBeVisible()
 
