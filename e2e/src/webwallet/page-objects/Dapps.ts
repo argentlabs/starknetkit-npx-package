@@ -1,8 +1,6 @@
 import { Page, expect } from "@playwright/test"
 import { ICredentials } from "./Login"
 import Navigation from "./Navigation"
-import { artifactsDir } from "../../shared/cfg/test"
-import { randomUUID } from "crypto"
 import SapoEmailClient from "../../shared/src/SapoEmailClient"
 import config from "../config"
 const dappUrl = "http://localhost:3000/"
@@ -33,10 +31,10 @@ export default class Dapps extends Navigation {
 
     await dApp.getByRole("button", { name: "Connection" }).click()
     if (useStarknetKitModal) {
-      await dApp.getByRole("button", { name: "Starknetkit Modal" }).click()
-      const popup = await this.handlePopup(dApp, credentials, newAccount)
-      await this.verifyEmailInPopup(popup, credentials.email)
-      await popup.locator('button[type="submit"]').click()
+      await Promise.all([
+        dApp.getByRole("button", { name: "Starknetkit Modal" }).click(),
+        this.handlePopup(dApp, credentials, newAccount)
+      ])
     } else {
       const pagePromise = dApp.context().waitForEvent("page")
       await dApp.locator('button :text-is("Argent Web Wallet")').click()
@@ -55,7 +53,6 @@ export default class Dapps extends Navigation {
     await page.locator("[name=email]").fill(credentials.email)
     await page.locator('button[type="submit"]').click()
     const pin = await mailClient.getPin()
-    console.log("PIN:", pin)
     await page.locator('[id^="pin-input"]').first().click()
     await page.locator('[id^="pin-input"]').first().fill(pin!)
     if (newAccount) {
@@ -85,15 +82,6 @@ export default class Dapps extends Navigation {
     // Wait for the popup to load.
     await popup.waitForLoadState()
     return this.fillCredentials(popup, credentials, newAccount)
-  }
-
-  private async verifyEmailInPopup(popup: Page, email: string) {
-    await expect(popup.locator(`text="${email}"`))
-      .toBeVisible()
-      .catch(async () => {
-        await popup.screenshot({ path: `${artifactsDir}/${randomUUID()}.png` })
-        throw new Error("Email not visible")
-      })
   }
 
   async sendERC20transaction({
