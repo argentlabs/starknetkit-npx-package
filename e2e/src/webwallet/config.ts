@@ -16,11 +16,12 @@ const config = {
   emailPassword: process.env.EMAIL_PASSWORD!,
   acc_destination: commonConfig.destinationAddress! || "",
   vw_acc_addr: process.env.VW_ACC_ADDR! || "",
-  url: /* 
+  url: "https://web.argent.xyz",
+  /* 
+    TODO: wait for sepolia in prod
     process.env.ARGENT_X_ENVIRONMENT === "prod"
-      ? "https://web.argent.xyz"
-      : */ "https://web-v2.hydrogen.argent47.net",
-  ...commonConfig,
+      ? "https://web.argent.xyz" :
+      "" */ ...commonConfig,
 }
 
 // check that no value of config is undefined, otherwise throw error
