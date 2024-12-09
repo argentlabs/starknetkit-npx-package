@@ -74,6 +74,7 @@ jobs:
     needs: [build]
     env:
       ARGENT_X_ENVIRONMENT: "hydrogen"
+      NEXT_PUBLIC_ARGENT_WEBWALLET_URL: "https://web-v2.hydrogen.argent47.net"
 
       WW_EMAIL: ${{ secrets.WW_EMAIL }}
       WW_LOGIN_PASSWORD: ${{ secrets.WW_LOGIN_PASSWORD }}
