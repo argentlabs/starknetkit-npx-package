@@ -16,10 +16,10 @@ const config = {
   emailPassword: process.env.EMAIL_PASSWORD!,
   acc_destination: commonConfig.destinationAddress! || "",
   vw_acc_addr: process.env.VW_ACC_ADDR! || "",
-  url:
+  url: /* 
     process.env.ARGENT_X_ENVIRONMENT === "prod"
       ? "https://web.argent.xyz"
-      : "https://web-v2.hydrogen.argent47.net",
+      : */ "https://web-v2.hydrogen.argent47.net",
   ...commonConfig,
 }
 

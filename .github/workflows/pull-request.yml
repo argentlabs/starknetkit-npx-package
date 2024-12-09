@@ -59,7 +59,7 @@ jobs:
         run: pnpm install
 
       - name: Build demo-dapp-starknet
-        run: pnpm run build
+        run: NEXT_PUBLIC_ARGENT_WEBWALLET_URL=https://web-v2.hydrogen.argent47.net pnpm run build
 
       - name: Use Cache
         uses: actions/cache@v4
