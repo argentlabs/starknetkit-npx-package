@@ -75,7 +75,7 @@ export default class SapoEmailClient {
         return null;
     }
 
-    async waitForEmail(timeout: number = 30000): Promise<string> {
+    async waitForEmail(timeout: number = 40000): Promise<string> {
         const startTime = Date.now();
         console.log('Waiting for verification email...');
         const connection = await this.getConnection();

@@ -7,8 +7,10 @@ const dappUrl = "http://localhost:3000/"
 let mailClient: SapoEmailClient
 
 export default class Dapps extends Navigation {
+  private dApp: Page
   constructor(page: Page) {
     super(page)
+    this.dApp = page
     mailClient = new SapoEmailClient(
       config.validLogin.email,
       config.emailPassword,
@@ -26,6 +28,7 @@ export default class Dapps extends Navigation {
     newAccount: boolean
     useStarknetKitModal?: boolean
   }) {
+    this.dApp = dApp
     await dApp.setViewportSize({ width: 1080, height: 720 })
     await dApp.goto(dappUrl)
 
@@ -33,7 +36,7 @@ export default class Dapps extends Navigation {
     if (useStarknetKitModal) {
       await Promise.all([
         dApp.getByRole("button", { name: "Starknetkit Modal" }).click(),
-        this.handlePopup(dApp, credentials, newAccount)
+        this.handlePopup(credentials, newAccount)
       ])
     } else {
       const pagePromise = dApp.context().waitForEvent("page")
@@ -42,7 +45,7 @@ export default class Dapps extends Navigation {
       await this.fillCredentials(newPage, credentials, newAccount)
     }
 
-    return dApp
+    this.dApp = dApp
   }
 
   private async fillCredentials(
@@ -71,13 +74,13 @@ export default class Dapps extends Navigation {
   }
 
   private async handlePopup(
-    dApp: Page,
+
     credentials: ICredentials,
     newAccount: boolean,
   ) {
-    const popupPromise = dApp.waitForEvent("popup")
-    await expect(dApp.locator("p:text-is('Email')")).toBeVisible()
-    await dApp.locator("p:text-is('Email')").click()
+    const popupPromise = this.dApp.waitForEvent("popup")
+    await expect(this.dApp.locator("p:text-is('Email')")).toBeVisible()
+    await this.dApp.locator("p:text-is('Email')").click()
     const popup = await popupPromise
     // Wait for the popup to load.
     await popup.waitForLoadState()
@@ -85,44 +88,46 @@ export default class Dapps extends Navigation {
   }
 
   async sendERC20transaction({
-    dapp,
     type,
   }: {
-    dapp: Page
     type: "ERC20" | "Multicall"
   }) {
-    const popupPromise = dapp.waitForEvent("popup")
-    const dialogPromise = dapp.waitForEvent("dialog")
+    const popupPromise = this.dApp.waitForEvent("popup")
+    const dialogPromise = this.dApp.waitForEvent("dialog")
     console.log("Sending ERC20 transaction")
-    await dapp.locator('button :text-is("Transactions")').click()
-    await dapp.locator(`button :text-is("Send ${type}")`).click()
+    await this.dApp.locator('button :text-is("Transactions")').click()
+    const [_, popup] = await Promise.all([
+      this.dApp.locator(`button :text-is("Send ${type}")`).click(),
+      popupPromise
+    ])
     console.log("Sending ERC20 transaction: send clicked")
 
-    const popup = await popupPromise
     await expect(popup.getByText("Review transaction")).toBeVisible()
     console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
     console.log("Sending ERC20 transaction: confirm visible")
-    await popup.getByText("Confirm").click({ timeout: 30000, force: true })
+    const [__, dialog] = await Promise.all([
+      popup.getByText("Confirm").click(),
+      dialogPromise
+    ])
     console.log("Sending ERC20 transaction: confirm clicked")
-    //await popup.waitForEvent("close", { timeout: 10000 })
 
     console.log("Signing message: wait for dialog")
-    const dialog = await dialogPromise
     expect(dialog.message()).toContain("Transaction sent")
     await dialog.accept()
 
-    return dapp
   }
 
-  async signMessage({ dapp }: { dapp: Page }) {
+  async signMessage() {
     console.log("Signing message")
-    const popupPromise = dapp.waitForEvent("popup")
-    await dapp.locator('button :text-is("Signing")').click()
-    await dapp.locator("[name=short-text]").fill("some message to sign")
-    await dapp.locator('button[type="submit"]').click()
+    const popupPromise = this.dApp.waitForEvent("popup")
+    await this.dApp.locator('button :text-is("Signing")').click()
+    await this.dApp.locator("[name=short-text]").fill("some message to sign")
+    const [_, popup] = await Promise.all([
+      this.dApp.locator('button[type="submit"]').click(),
+      popupPromise
+    ])
 
-    const popup = await popupPromise
     await expect(popup.getByText("Sign Message")).toBeVisible()
     console.log("Signing message: sign message visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
@@ -132,14 +137,13 @@ export default class Dapps extends Navigation {
     //await popup.waitForEvent("close", { timeout: 10000 })
 
     console.log("Signing message: wait for ui")
-    await expect(dapp.getByText("Signer", { exact: true })).toBeVisible()
-    await expect(dapp.getByText("Cosigner", { exact: true })).toBeVisible()
-
-    await expect(dapp.locator("[name=signer_r]")).toBeVisible()
-    await expect(dapp.locator("[name=signer_s]")).toBeVisible()
-    await expect(dapp.locator("[name=cosigner_r]")).toBeVisible()
-    await expect(dapp.locator("[name=cosigner_s]")).toBeVisible()
-
-    return dapp
+    await Promise.all([
+      expect(this.dApp.getByText("Signer", { exact: true })).toBeVisible(),
+      expect(this.dApp.getByText("Cosigner", { exact: true })).toBeVisible(),
+      expect(this.dApp.locator("[name=signer_r]")).toBeVisible(),
+      expect(this.dApp.locator("[name=signer_s]")).toBeVisible(),
+      expect(this.dApp.locator("[name=cosigner_r]")).toBeVisible(),
+      expect(this.dApp.locator("[name=cosigner_s]")).toBeVisible(),
+    ])
   }
 }

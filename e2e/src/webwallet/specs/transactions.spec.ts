@@ -3,7 +3,7 @@ import config from "../config"
 
 test.describe(`Transactions`, () => {
   test(`send an ERC20 from testDapp`, async ({ webWallet, dApp }) => {
-    const dapp = await webWallet.dapps.requestConnectionFromDapp({
+    await webWallet.dapps.requestConnectionFromDapp({
       dApp,
       credentials: config.validLogin,
       newAccount: false,
@@ -11,13 +11,12 @@ test.describe(`Transactions`, () => {
     })
 
     await webWallet.dapps.sendERC20transaction({
-      dapp,
       type: "ERC20",
     })
   })
 
   test(`send an Multicall from testDapp`, async ({ webWallet, dApp }) => {
-    const dapp = await webWallet.dapps.requestConnectionFromDapp({
+   await webWallet.dapps.requestConnectionFromDapp({
       dApp,
       credentials: config.validLogin,
       newAccount: false,
@@ -25,7 +24,6 @@ test.describe(`Transactions`, () => {
     })
 
     await webWallet.dapps.sendERC20transaction({
-      dapp,
       type: "Multicall",
     })
   })
