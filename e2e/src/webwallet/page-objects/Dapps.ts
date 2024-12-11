@@ -66,12 +66,13 @@ export default class Dapps extends Navigation {
     }
 
     // password submit
+    console.log("password submit")
     await popup.locator('button[type="submit"]').click()
 
     await Promise.all([
       popup.waitForURL("**/connect?**"),
       popup.waitForLoadState("networkidle"),
-      popup.waitForTimeout(2000), // additional safety delay if needed
+      popup.waitForTimeout(5000), // additional safety delay if needed
     ])
 
     const allButtons = popup.locator("button")
@@ -79,6 +80,7 @@ export default class Dapps extends Navigation {
 
     // check if connect page is showed by checking buttons
     if (count > 0) {
+      console.log("connect to dapp submit")
       await popup.locator('button[type="submit"]').click()
     }
 
