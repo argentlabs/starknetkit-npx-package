@@ -66,12 +66,10 @@ export default class Dapps extends Navigation {
     }
 
     // password submit
-    console.log("password submit")
     await popup.locator('button[type="submit"]').click()
 
     await Promise.all([
       popup.waitForURL("**/connect?**"),
-      popup.waitForLoadState("networkidle"),
       popup.waitForTimeout(5000), // additional safety delay if needed
     ])
 
@@ -80,7 +78,6 @@ export default class Dapps extends Navigation {
 
     // check if connect page is showed by checking buttons
     if (count > 0) {
-      console.log("connect to dapp submit")
       await popup.locator('button[type="submit"]').click()
     }
 
@@ -100,31 +97,24 @@ export default class Dapps extends Navigation {
   async sendERC20transaction({ type }: { type: "ERC20" | "Multicall" }) {
     const popupPromise = this.dApp.waitForEvent("popup")
     const dialogPromise = this.dApp.waitForEvent("dialog")
-    console.log("Sending ERC20 transaction")
     await this.dApp.locator('button :text-is("Transactions")').click()
     const [, popup] = await Promise.all([
       this.dApp.locator(`button :text-is("Send ${type}")`).click(),
       popupPromise,
     ])
-    console.log("Sending ERC20 transaction: send clicked")
 
     await expect(popup.getByText("Review transaction")).toBeVisible()
-    console.log("Sending ERC20 transaction: review transaction visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
-    console.log("Sending ERC20 transaction: confirm visible")
     const [, dialog] = await Promise.all([
       popup.getByText("Confirm").click(),
       dialogPromise,
     ])
-    console.log("Sending ERC20 transaction: confirm clicked")
 
-    console.log("Signing message: wait for dialog")
     expect(dialog.message()).toContain("Transaction sent")
     await dialog.accept()
   }
 
   async signMessage() {
-    console.log("Signing message")
     const popupPromise = this.dApp.waitForEvent("popup")
     await this.dApp.locator('button :text-is("Signing")').click()
     await this.dApp.locator("[name=short-text]").fill("some message to sign")
@@ -134,14 +124,9 @@ export default class Dapps extends Navigation {
     ])
 
     await expect(popup.getByText("Sign Message")).toBeVisible()
-    console.log("Signing message: sign message visible")
     await expect(popup.getByText("Confirm")).toBeVisible()
-    console.log("Signing message: confirm visible")
     await popup.getByText("Confirm").click({ timeout: 30000, force: true })
-    console.log("Signing message: confirm clicked")
-    //await popup.waitForEvent("close", { timeout: 10000 })
 
-    console.log("Signing message: wait for ui")
     await Promise.all([
       expect(this.dApp.getByText("Signer", { exact: true })).toBeVisible(),
       expect(this.dApp.getByText("Cosigner", { exact: true })).toBeVisible(),
@@ -150,5 +135,23 @@ export default class Dapps extends Navigation {
       expect(this.dApp.locator("[name=cosigner_r]")).toBeVisible(),
       expect(this.dApp.locator("[name=cosigner_s]")).toBeVisible(),
     ])
+  }
+
+  async network({ type }: { type: "Add" | "Change" }) {
+    const dialogPromise = this.dApp.waitForEvent("dialog")
+    await this.dApp.locator('button :text-is("Network")').click()
+    await this.dApp.locator(`button :text-is("${type} Network")`).click()
+    const dialog = await dialogPromise
+    expect(dialog.message()).toContain("Not implemented")
+    await dialog.accept()
+  }
+
+  async addToken() {
+    const dialogPromise = this.dApp.waitForEvent("dialog")
+    await this.dApp.locator('button :text-is("ERC20")').click()
+    await this.dApp.locator(`button :text-is("Add Token")`).click()
+    const dialog = await dialogPromise
+    expect(dialog.message()).toContain("Not implemented")
+    await dialog.accept()
   }
 }
