@@ -141,4 +141,34 @@ export default class Dapps extends Navigation {
       expect(this.dApp.locator("[name=signer_s]")).toBeVisible(),
     ])
   }
+
+  async network({
+    browserContext,
+    type,
+  }: {
+    browserContext: ChromiumBrowserContext
+    type: "Add" | "Change"
+  }) {
+    const [extension, dappPage] = browserContext.pages()
+    dappPage.bringToFront()
+    await this.dApp.locator('button :text-is("Network")').click()
+    await this.dApp.locator(`button :text-is("${type} Network")`).click()
+
+    extension.bringToFront()
+    await this.dApp.waitForTimeout(1000)
+    await this.page
+      .locator(
+        `button:text-is("${type === "Add" ? lang.network.addNetwork : lang.network.switchNetwork}")`,
+      )
+      .click()
+
+    if (type === "Change") {
+      await this.accept.click()
+    }
+  }
+
+  async addToken() {
+    await this.dApp.locator('button :text-is("ERC20")').click()
+    await this.dApp.locator(`button :text-is("Add Token")`).click()
+  }
 }
