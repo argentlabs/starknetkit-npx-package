@@ -165,6 +165,10 @@ const texts = {
     accept: "Confirm",
     reject: "Reject",
   },
+  network: {
+    addNetwork: "Add Network",
+    switchNetwork: "Switch network",
+  },
 } as const
 
 export default texts

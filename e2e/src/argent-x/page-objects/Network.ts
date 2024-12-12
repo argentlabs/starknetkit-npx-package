@@ -62,6 +62,11 @@ export default class Network extends Navigation {
     }
   }
 
+  async openNetworkSelector() {
+    await this.networkSelector.click()
+    await this.page.locator('[data-testid="network-switcher-button"]').click()
+  }
+
   async ensureAvailableNetworks(networks: string[]) {
     await this.networkSelector.click()
     await this.page.locator('[data-testid="network-switcher-button"]').click()
