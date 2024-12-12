@@ -16,12 +16,16 @@ test.describe("Connect", () => {
       browserContext,
     }) => {
       //setup wallet
-      await extension.wallet.newWalletOnboarding()
       await extension.open()
+      await extension.recoverWallet(config.testSeed3!)
+      await expect(extension.network.networkSelector).toBeVisible()
+      await extension.network.selectDefaultNetwork()
+
       await extension.dapps.requestConnectionFromDapp({
         browserContext,
         useStarknetKitModal,
       })
+
       //accept connection from Argent X
       await extension.dapps.accept.click()
       //check connect dapps
@@ -30,6 +34,7 @@ test.describe("Connect", () => {
       await extension.page
         .getByRole("button", { name: "Connected dapps" })
         .click()
+
       await expect(extension.dapps.connected()).toBeVisible()
       //disconnect dapp from Argent X
       await extension.dapps.disconnect().click()
@@ -38,7 +43,7 @@ test.describe("Connect", () => {
         .getByRole("button", { name: "Connected dapps" })
         .click()
       await expect(
-        extension.page.getByRole("heading", { name: "No connected dapps" }),
+        extension.page.getByRole("heading", { name: "No authorised dapps" }),
       ).toBeVisible()
     })
   }

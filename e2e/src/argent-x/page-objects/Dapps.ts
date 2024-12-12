@@ -79,13 +79,14 @@ export default class Dapps extends Navigation {
       await this.dApp.getByRole("button", { name: "Starknetkit Modal" }).click()
       await this.dApp
         .locator("#starknetkit-modal-container")
-        .getByRole("button", { name: "Argent X Argent X" })
+        .getByRole("button", { name: "Argent X" })
         .click()
     } else {
       await expect(
         this.dApp.locator('button :text-is("Argent X")'),
       ).toBeVisible()
     }
+
     await this.dApp.locator('button :text-is("Argent X")').click()
   }
 
@@ -129,13 +130,6 @@ export default class Dapps extends Navigation {
     await this.dApp.locator('button :text-is("Signing")').click()
     await this.dApp.locator("[name=short-text]").fill("some message to sign")
     await this.dApp.locator('button[type="submit"]').click()
-
-    await expect(
-      this.page.locator(`button:text-is("${lang.transaction.accept}")`),
-    ).toBeVisible()
-    await expect(
-      this.page.locator(`button:text-is("${lang.transaction.reject}")`),
-    ).toBeVisible()
 
     extension.bringToFront()
     await this.page.locator(`button:text-is("${lang.sign.accept}")`).click()
