@@ -1,15 +1,10 @@
 import { expect } from "@playwright/test"
 
 import test from "../test"
-import { downloadGitHubRelease, unzip } from "../utils"
 import config from "../../../config"
 
 test.describe("Connect", () => {
-  test.beforeAll(async ({}) => {
-    const version = await downloadGitHubRelease()
-    const currentVersionDir = await unzip(version)
-    config.distDir = currentVersionDir
-  })
+  
   for (const useStarknetKitModal of [true, false] as const) {
     test(`connect from testDapp using starknetKitModal ${useStarknetKitModal}`, async ({
       extension,

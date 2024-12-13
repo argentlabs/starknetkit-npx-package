@@ -1,15 +1,8 @@
 import test from "../test"
 import config from "../../../config"
-import { downloadGitHubRelease } from "../utils/downloadGitHubRelease"
-import { unzip } from "../utils"
 import { expect } from "@playwright/test"
 
 test.describe(`Network`, () => {
-  test.beforeAll(async ({}) => {
-    const version = await downloadGitHubRelease()
-    const currentVersionDir = await unzip(version)
-    config.distDir = currentVersionDir
-  })
 
   test(`add a new network`, async ({ extension, browserContext }) => {
     await extension.open()

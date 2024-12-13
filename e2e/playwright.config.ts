@@ -45,6 +45,7 @@ const playwrightConfig: PlaywrightTestConfig = {
   outputDir: config.artifactsDir,
   preserveOutput: "failures-only",
   globalTeardown: "./src/shared/cfg/global.teardown.ts",
+  globalSetup: "./src/shared/cfg/global.setup.ts",
 }
 
 export default playwrightConfig

@@ -1,15 +1,9 @@
 import { expect } from "@playwright/test"
 
 import test from "../test"
-import { downloadGitHubRelease, unzip } from "../utils"
 import config from "../../../config"
 
 test.describe("Sign message", () => {
-  test.beforeAll(async ({}) => {
-    const version = await downloadGitHubRelease()
-    const currentVersionDir = await unzip(version)
-    config.distDir = currentVersionDir
-  })
 
   test(`sign a message from testDapp`, async ({
     extension,

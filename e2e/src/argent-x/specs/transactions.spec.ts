@@ -1,16 +1,9 @@
 import { expect } from "@playwright/test"
 
 import test from "../test"
-import { downloadGitHubRelease, unzip } from "../utils"
 import config from "../../../config"
 
 test.describe(`Transactions`, () => {
-  test.beforeAll(async ({}) => {
-    const version = await downloadGitHubRelease()
-    const currentVersionDir = await unzip(version)
-    config.distDir = currentVersionDir
-  })
-
   test(`send an ERC20 from testDapp`, async ({ extension, browserContext }) => {
     //setup wallet
     await extension.open()
