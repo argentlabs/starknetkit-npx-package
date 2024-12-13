@@ -11,10 +11,7 @@ test.describe(`Network`, () => {
     config.distDir = currentVersionDir
   })
 
-  test(`not implemented while calling Add Network`, async ({
-    extension,
-    browserContext,
-  }) => {
+  test(`add a new network`, async ({ extension, browserContext }) => {
     await extension.open()
     await extension.recoverWallet(config.testSeed3!)
     await expect(extension.network.networkSelector).toBeVisible()
@@ -42,10 +39,7 @@ test.describe(`Network`, () => {
     ).toBeVisible()
   })
 
-  test(`not implemented while calling Change Network`, async ({
-    extension,
-    browserContext,
-  }) => {
+  test(`switch network`, async ({ extension, browserContext }) => {
     await extension.open()
     await extension.recoverWallet(config.testSeed3!)
     await expect(extension.network.networkSelector).toBeVisible()

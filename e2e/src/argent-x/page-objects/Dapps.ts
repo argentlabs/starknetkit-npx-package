@@ -167,8 +167,18 @@ export default class Dapps extends Navigation {
     }
   }
 
-  async addToken() {
+  async addToken({
+    browserContext,
+  }: {
+    browserContext: ChromiumBrowserContext
+  }) {
+    const [extension, dappPage] = browserContext.pages()
+    dappPage.bringToFront()
     await this.dApp.locator('button :text-is("ERC20")').click()
     await this.dApp.locator(`button :text-is("Add Token")`).click()
+
+    extension.bringToFront()
+    await this.dApp.waitForTimeout(1000)
+    await this.page.locator(`button:text-is("Add token")`).click()
   }
 }
