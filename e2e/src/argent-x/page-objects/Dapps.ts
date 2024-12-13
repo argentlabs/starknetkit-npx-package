@@ -105,6 +105,7 @@ export default class Dapps extends Navigation {
     // avoid too many requests in a short time, causing user to reject
     await this.dApp.waitForTimeout(2500)
     await this.dApp.locator('button :text-is("Transactions")').click()
+    await this.dApp.waitForTimeout(2500)
     await this.dApp.locator(`button :text-is("Send ${type}")`).click()
 
     await expect(extension.getByText("Review transaction")).toBeVisible()
