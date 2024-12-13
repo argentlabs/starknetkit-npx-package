@@ -145,7 +145,7 @@ const initBrowserWithExtension = async (
 function createExtension(label: string, upgrade: boolean = false) {
   return async ({ }, use: any, testInfo: TestInfo) => {
     const userDataDir = `/tmp/test-user-data-${uuid()}`
-    let buildDir = config.distDir
+    let buildDir = process.env.ARGENTX_DIST_DIR!
     if (upgrade) {
       fs.copy(buildDir, config.migVersionDir)
       buildDir = config.migVersionDir

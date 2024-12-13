@@ -34,7 +34,7 @@ export default class Network extends Navigation {
   }
 
   get networkSelector() {
-    return this.page.getByLabel("Show account list")
+    return this.page.locator(`[aria-label="Show account list"]`)
   }
 
   networkOption(name: string) {
@@ -60,6 +60,11 @@ export default class Network extends Navigation {
     } else {
       await this.closeButtonLocator.click()
     }
+  }
+
+  async openNetworkSelector() {
+    await this.networkSelector.click()
+    await this.page.locator('[data-testid="network-switcher-button"]').click()
   }
 
   async ensureAvailableNetworks(networks: string[]) {

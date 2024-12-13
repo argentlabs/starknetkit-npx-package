@@ -157,6 +157,18 @@ const texts = {
     extendedView: "Extended view",
     lockWallet: "Lock wallet",
   },
+  sign: {
+    accept: "Sign",
+    reject: "Reject",
+  },
+  transaction: {
+    accept: "Confirm",
+    reject: "Reject",
+  },
+  network: {
+    addNetwork: "Add Network",
+    switchNetwork: "Switch network",
+  },
 } as const
 
 export default texts
