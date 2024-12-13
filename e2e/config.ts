@@ -34,7 +34,7 @@ const commonConfig = {
 const extensionHydrogenConfig = {
   ...commonConfig || "",
   testSeed1: process.env.E2E_TESTNET_SEED1 || "", //wallet with 33 regular deployed accounts and 1 multisig deployed account
-  testSeed3: process.env.E2E_TESTNET_SEED3, //wallet with 1 deployed account|| "", and multisig with removed user
+  testSeed3: process.env.E2E_TESTNET_SEED3 || "", //wallet with 1 deployed account|| "", and multisig with removed user
   testSeed4: process.env.E2E_TESTNET_SEED4 || "", //wallet with non deployed account but with funds
   senderSeed: process.env.E2E_SENDER_SEED || "",
   account1Seed2: process.env.E2E_ACCOUNT_1_SEED2 || "",
