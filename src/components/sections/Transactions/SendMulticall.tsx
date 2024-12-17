@@ -8,7 +8,7 @@ import {
 } from "@starknet-react/core"
 import { useState } from "react"
 import { Button } from "../../ui/Button"
-import { abi } from "../../../abi/erc20TransferAbi"
+import { erco20TransferAbi } from "../../../abi/erc20TransferAbi"
 
 const SendMulticall = () => {
   const { account } = useAccount()
@@ -17,7 +17,7 @@ const SendMulticall = () => {
   const [lastTxError, setLastTxError] = useState("")
 
   const { contract } = useContract({
-    abi,
+    abi: erco20TransferAbi,
     address: ETHTokenAddress,
   })
 
