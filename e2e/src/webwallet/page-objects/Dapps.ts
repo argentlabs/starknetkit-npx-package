@@ -154,4 +154,30 @@ export default class Dapps extends Navigation {
     expect(dialog.message()).toContain("Not implemented")
     await dialog.accept()
   }
+
+  async sessionKeys() {
+    const popupPromise = this.dApp.waitForEvent("popup")
+
+    await this.dApp.locator('button :text-is("Session Keys")').click()
+    await this.dApp.waitForTimeout(2500)
+    const [, popup] = await Promise.all([
+      this.dApp.locator(`button :text-is("Create session")`).click(),
+      popupPromise,
+    ])
+
+    await popup
+      .getByRole("button")
+      .and(popup.getByText("Start session"))
+      .click()
+    await this.dApp.waitForTimeout(2500)
+
+    const dialogPromise = this.dApp.waitForEvent("dialog")
+    const [, dialog] = await Promise.all([
+      this.dApp.getByText("Submit session tx").click(),
+      dialogPromise,
+    ])
+
+    expect(dialog.message()).toContain("Transaction sent")
+    await dialog.accept()
+  }
 }

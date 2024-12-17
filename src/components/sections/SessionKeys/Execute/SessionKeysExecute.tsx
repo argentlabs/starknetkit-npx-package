@@ -41,7 +41,7 @@ const SessionKeysExecute: FC<WithSessionAccount> = ({ sessionAccount }) => {
         onClick={handleSignSessionKeys}
         hideChevron
       >
-        Submit {isSubmitting ? <Spinner /> : ""}
+        Submit session tx {isSubmitting ? <Spinner /> : ""}
       </Button>
     </>
   )

@@ -94,6 +94,7 @@ const StarknetDapp = () => {
               />
               <SectionButton
                 section="SessionKeys"
+                label="Session Keys"
                 setSection={setSection}
                 selected={section === "SessionKeys"}
                 disabled={!isConnected}

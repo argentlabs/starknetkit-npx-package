@@ -52,23 +52,27 @@ const SessionKeysSign = () => {
       throw new Error("No address or chainId")
     }
 
-    const authorisationSignature = await signTypedDataAsync()
-    const sessionObj = await createSession({
-      address: address,
-      chainId: hexChainId as constants.StarknetChainId,
-      authorisationSignature,
-      sessionRequest,
-    })
+    try {
+      const authorisationSignature = await signTypedDataAsync()
+      const sessionObj = await createSession({
+        address: address,
+        chainId: hexChainId as constants.StarknetChainId,
+        authorisationSignature,
+        sessionRequest,
+      })
 
-    const sessionAccount = await buildSessionAccount({
-      session: sessionObj,
-      sessionKey,
-      provider,
-      argentSessionServiceBaseUrl: ARGENT_SESSION_SERVICE_BASE_URL,
-    })
+      const sessionAccount = await buildSessionAccount({
+        session: sessionObj,
+        sessionKey,
+        provider,
+        argentSessionServiceBaseUrl: ARGENT_SESSION_SERVICE_BASE_URL,
+      })
 
-    setSession(sessionObj)
-    setSessionAccount(sessionAccount)
+      setSession(sessionObj)
+      setSessionAccount(sessionAccount)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   return (

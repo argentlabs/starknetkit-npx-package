@@ -42,6 +42,7 @@ const SessionKeysExecuteOutside: FC<WithSession> = ({
       handleSubmit={handleSubmitEFO}
       submitDisabled={!sessionAccount}
       title="Create outside execution call"
+      submitText="EFO"
     />
   )
 }

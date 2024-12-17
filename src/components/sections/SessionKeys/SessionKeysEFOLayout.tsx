@@ -7,6 +7,7 @@ interface SessionKeysEFOLayoutProps {
   submitDisabled: boolean
   copyDataDisabled: boolean
   title: string
+  submitText: string
 }
 
 const SessionKeysEFOLayout: FC<SessionKeysEFOLayoutProps> = ({
@@ -15,6 +16,7 @@ const SessionKeysEFOLayout: FC<SessionKeysEFOLayoutProps> = ({
   submitDisabled,
   copyDataDisabled,
   title,
+  submitText,
 }) => {
   const copy = () => {
     navigator.clipboard.writeText(JSON.stringify(copyData))
@@ -29,7 +31,7 @@ const SessionKeysEFOLayout: FC<SessionKeysEFOLayoutProps> = ({
         disabled={submitDisabled}
         hideChevron
       >
-        Submit
+        Submit {submitText}
       </Button>
       <Button
         className="w-full rounded-lg"
@@ -37,7 +39,7 @@ const SessionKeysEFOLayout: FC<SessionKeysEFOLayoutProps> = ({
         disabled={copyDataDisabled}
         hideChevron
       >
-        Copy data
+        Copy {submitText}
       </Button>
     </div>
   )
