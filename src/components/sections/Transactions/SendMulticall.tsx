@@ -1,6 +1,6 @@
 // TokenOperations.tsx
 import { ETHTokenAddress } from "@/constants"
-import { parseInputAmountToUint256 } from "@/helper/token"
+import { parseInputAmountToUint256 } from "@/helpers/token"
 import {
   useAccount,
   useContract,
@@ -8,7 +8,7 @@ import {
 } from "@starknet-react/core"
 import { useState } from "react"
 import { Button } from "../../ui/Button"
-import { abi } from "./abi"
+import { abi } from "../../../abi/erc20TransferAbi"
 
 const SendMulticall = () => {
   const { account } = useAccount()
