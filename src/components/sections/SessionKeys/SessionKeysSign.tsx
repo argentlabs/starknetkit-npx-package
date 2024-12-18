@@ -21,6 +21,7 @@ import { ARGENT_SESSION_SERVICE_BASE_URL, provider } from "@/constants"
 import { SessionKeysExecute } from "./Execute/SessionKeysExecute"
 import { SessionKeysExecuteOutside } from "./ExecuteFromOutside/SessionKeysExecuteOutside"
 import { SessionKeysTypedDataOutside } from "./TypedDataExecuteFromOutside/SessionKeysTypedDataOutside"
+import { SessionKeysIcon } from "@/components/icons/SessionKesIcon"
 
 const SessionKeysSign = () => {
   const { address, chainId } = useAccount()
@@ -76,12 +77,10 @@ const SessionKeysSign = () => {
   }
 
   return (
-    <SectionLayout sectionTitle="Session Keys">
-      <div className="flex w-1/2 justify-start">
-        <Button onClick={handleSignSessionKeys} hideChevron>
-          Create session
-        </Button>
-      </div>
+    <SectionLayout sectionTitle="Session Keys" icon={<SessionKeysIcon />}>
+      <Button className="w-full" onClick={handleSignSessionKeys} hideChevron>
+        Create session
+      </Button>
       <SessionKeysExecute sessionAccount={sessionAccount} />
       <SessionKeysExecuteOutside
         session={session}

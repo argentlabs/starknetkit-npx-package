@@ -159,7 +159,7 @@ export default class Dapps extends Navigation {
     const popupPromise = this.dApp.waitForEvent("popup")
 
     await this.dApp.locator('button :text-is("Session Keys")').click()
-    await this.dApp.waitForTimeout(2500)
+    await this.dApp.waitForTimeout(100)
     const [, popup] = await Promise.all([
       this.dApp.locator(`button :text-is("Create session")`).click(),
       popupPromise,
@@ -169,7 +169,7 @@ export default class Dapps extends Navigation {
       .getByRole("button")
       .and(popup.getByText("Start session"))
       .click()
-    await this.dApp.waitForTimeout(2500)
+    await this.dApp.waitForTimeout(100)
 
     const dialogPromise = this.dApp.waitForEvent("dialog")
     const [, dialog] = await Promise.all([
@@ -179,5 +179,26 @@ export default class Dapps extends Navigation {
 
     expect(dialog.message()).toContain("Transaction sent")
     await dialog.accept()
+
+    await this.dApp.waitForTimeout(500)
+    await this.dApp.getByText("Submit EFO call").click()
+    const dialogPromiseEFO = this.dApp.waitForEvent("dialog")
+    await this.dApp.waitForTimeout(100)
+    this.dApp.getByText("Copy EFO call").click()
+    const dialogEFO = await dialogPromiseEFO
+    await this.dApp.waitForTimeout(500)
+    expect(dialogEFO.message()).toContain("Data copied in your clipboard")
+    await dialogEFO.accept()
+
+    await this.dApp.getByText("Submit EFO TypedData").click()
+    const dialogPromiseEFOTypedData = this.dApp.waitForEvent("dialog")
+    await this.dApp.waitForTimeout(100)
+    this.dApp.getByText("Copy EFO TypedData").click()
+    const dialogEFOTypedData = await dialogPromiseEFOTypedData
+    await this.dApp.waitForTimeout(500)
+    expect(dialogEFOTypedData.message()).toContain(
+      "Data copied in your clipboard",
+    )
+    await dialogEFOTypedData.accept()
   }
 }

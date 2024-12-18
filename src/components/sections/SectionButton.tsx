@@ -24,6 +24,7 @@ const SectionButton: FC<SectionButtonProps> = ({
   className,
 }) => (
   <Button
+    responsiveChevron
     selected={selected}
     className={`text-medium-grey justify-between ${disabled ? "disabled" : ""} ${selected ? "bg-raisin-black" : "bg-black"} 
       ${className}`}

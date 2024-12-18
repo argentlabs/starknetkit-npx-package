@@ -42,7 +42,8 @@ const SessionKeysTypedDataOutside: FC<WithSession> = ({
       handleSubmit={handleSubmitEFO}
       submitDisabled={!sessionAccount}
       title="Create outside typed data"
-      submitText="EFO TypedData"
+      submitText="Submit EFO TypedData"
+      copyText="Copy EFO TypedData"
     />
   )
 }
