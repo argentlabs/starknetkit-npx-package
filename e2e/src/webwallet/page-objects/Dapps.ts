@@ -125,7 +125,9 @@ export default class Dapps extends Navigation {
 
     await expect(popup.getByText("Sign Message")).toBeVisible()
     await expect(popup.getByText("Confirm")).toBeVisible()
-    await popup.getByText("Confirm").click({ timeout: 30000, force: true })
+
+    await expect(popup.getByText("Confirm")).toBeVisible()
+    await popup.getByText("Confirm").click({ timeout: 3000, force: true })
 
     await Promise.all([
       expect(this.dApp.getByText("Signer", { exact: true })).toBeVisible(),
