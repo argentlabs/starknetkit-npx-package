@@ -1,4 +1,4 @@
-import { CHAIN_ID } from "@/constants"
+import { ARGENT_SESSION_SERVICE_BASE_URL, CHAIN_ID } from "@/constants"
 import { FC, useState } from "react"
 import { constants } from "starknet"
 import { SessionKeysEFOLayout } from "../SessionKeysEFOLayout"
@@ -25,7 +25,8 @@ const SessionKeysExecuteOutside: FC<WithSession> = ({
   const handleSubmitEFO = async () => {
     try {
       const efoExecute =
-        CHAIN_ID === constants.NetworkName.SN_MAIN
+        CHAIN_ID === constants.NetworkName.SN_MAIN ||
+        ARGENT_SESSION_SERVICE_BASE_URL.includes("staging")
           ? await submitMainnetEFO?.()
           : await submitTestnetEFO?.()
 

@@ -1,4 +1,4 @@
-import { CHAIN_ID } from "@/constants"
+import { ARGENT_SESSION_SERVICE_BASE_URL, CHAIN_ID } from "@/constants"
 import { FC, useState } from "react"
 import { constants } from "starknet"
 import { WithSessionAccount } from "../types"
@@ -16,7 +16,8 @@ const SessionKeysExecute: FC<WithSessionAccount> = ({ sessionAccount }) => {
     try {
       setIsSubmitting(true)
       const transaction_hash =
-        CHAIN_ID === constants.NetworkName.SN_MAIN
+        CHAIN_ID === constants.NetworkName.SN_MAIN ||
+        ARGENT_SESSION_SERVICE_BASE_URL.includes("staging")
           ? await submitMainnetTransaction?.()
           : await submitTestnetTransaction?.()
 

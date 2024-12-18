@@ -1,5 +1,6 @@
 import {
   ARGENT_DUMMY_CONTRACT_ADDRESS,
+  ARGENT_SESSION_SERVICE_BASE_URL,
   CHAIN_ID,
   ETHTokenAddress,
 } from "@/constants"
@@ -29,7 +30,8 @@ const STRKFees = [
 ]
 
 const allowedMethods =
-  CHAIN_ID === constants.NetworkName.SN_MAIN
+  CHAIN_ID === constants.NetworkName.SN_MAIN ||
+  ARGENT_SESSION_SERVICE_BASE_URL.includes("staging")
     ? [
         {
           "Contract Address": ARGENT_DUMMY_CONTRACT_ADDRESS,

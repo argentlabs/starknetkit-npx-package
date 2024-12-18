@@ -169,7 +169,7 @@ export default class Dapps extends Navigation {
       .getByRole("button")
       .and(popup.getByText("Start session"))
       .click()
-    await this.dApp.waitForTimeout(100)
+    await this.dApp.waitForTimeout(1000)
 
     const dialogPromise = this.dApp.waitForEvent("dialog")
     const [, dialog] = await Promise.all([
