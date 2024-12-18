@@ -127,7 +127,7 @@ export default class Dapps extends Navigation {
     await expect(popup.getByText("Confirm")).toBeVisible()
 
     await expect(popup.getByText("Confirm")).toBeVisible()
-    await popup.getByText("Confirm").click({ timeout: 3000, force: true })
+    popup.getByText("Confirm").click({ timeout: 3000, force: true })
 
     await Promise.all([
       expect(this.dApp.getByText("Signer", { exact: true })).toBeVisible(),
@@ -167,10 +167,7 @@ export default class Dapps extends Navigation {
       popupPromise,
     ])
 
-    await popup
-      .getByRole("button")
-      .and(popup.getByText("Start session"))
-      .click()
+    popup.getByRole("button").and(popup.getByText("Start session")).click()
     await this.dApp.waitForTimeout(1000)
 
     const dialogPromise = this.dApp.waitForEvent("dialog")
