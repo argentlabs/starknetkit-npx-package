@@ -102,11 +102,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Restore cached build
-        uses: actions/cache/restore@v4
-        with:
-          path: ./*
-          key: ${{ github.sha }}
+      - name: Build demo-dapp-starknet
+        run: NEXT_PUBLIC_ARGENT_WEBWALLET_URL=https://sepolia-web.argent.xyz && pnpm run build
 
       - name: Run e2e tests
         run: |
