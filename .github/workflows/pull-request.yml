@@ -59,7 +59,7 @@ jobs:
         run: pnpm install
 
       - name: Build demo-dapp-starknet
-        run: NEXT_PUBLIC_ARGENT_WEBWALLET_URL=https://sepolia-web.argent.xyz && pnpm run build
+        run: pnpm run build
 
       - name: Use Cache
         uses: actions/cache@v4
