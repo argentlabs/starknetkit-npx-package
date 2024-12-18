@@ -59,7 +59,7 @@ jobs:
         run: pnpm install
 
       - name: Build demo-dapp-starknet
-        run: pnpm run build
+        run: NEXT_PUBLIC_ARGENT_WEBWALLET_URL=https://sepolia-web.argent.xyz && pnpm run build
 
       - name: Use Cache
         uses: actions/cache@v4
@@ -80,40 +80,33 @@ jobs:
       EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
+        id: pnpm-install
         with:
-          run_install: false
           version: ${{ env.PNPM_VERSION }}
+          run_install: false
 
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "pnpm"
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v4
-        name: Setup pnpm cache
+      - name: Restore pnpm cache
+        uses: actions/cache/restore@v4
         with:
-          path: ${{ env.STORE_PATH }}
+          path: ~/.pnpm-store
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Build demo-dapp-starknet
-        run: NEXT_PUBLIC_ARGENT_WEBWALLET_URL=https://sepolia-web.argent.xyz && pnpm run build
+      - name: Restore cached build
+        uses: actions/cache/restore@v4
+        with:
+          path: ./*
+          key: ${{ github.sha }}
 
       - name: Run e2e tests
         run: |
