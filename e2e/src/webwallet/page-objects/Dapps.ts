@@ -125,9 +125,7 @@ export default class Dapps extends Navigation {
 
     await expect(popup.getByText("Sign Message")).toBeVisible()
     await expect(popup.getByText("Confirm")).toBeVisible()
-
-    await expect(popup.getByText("Confirm")).toBeVisible()
-    popup.getByText("Confirm").click({ timeout: 3000, force: true })
+    await popup.locator('button[type="submit"]').click()
 
     await Promise.all([
       expect(this.dApp.getByText("Signer", { exact: true })).toBeVisible(),
@@ -161,13 +159,16 @@ export default class Dapps extends Navigation {
     const popupPromise = this.dApp.waitForEvent("popup")
 
     await this.dApp.locator('button :text-is("Session Keys")').click()
+    await expect(
+      this.dApp.locator(`button :text-is("Create session")`),
+    ).toBeVisible()
     await this.dApp.waitForTimeout(100)
     const [, popup] = await Promise.all([
       this.dApp.locator(`button :text-is("Create session")`).click(),
       popupPromise,
     ])
 
-    popup.getByRole("button").and(popup.getByText("Start session")).click()
+    await popup.locator('button[type="submit"]').click()
     await this.dApp.waitForTimeout(1000)
 
     const dialogPromise = this.dApp.waitForEvent("dialog")
