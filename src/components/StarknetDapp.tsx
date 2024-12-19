@@ -41,7 +41,7 @@ const StarknetDapp = () => {
       </div>
 
       {!section && (
-        <div className="md:hidden w-dvw h-dvh fixed bg-backdrop"></div>
+        <div className="md:hidden w-dvw h-dvh fixed bg-backdrop pointer-events-none"></div>
       )}
 
       <div className="flex p-5 gap-3  md:py-[56px] md:px-[116px]  flex-1 h-full">
