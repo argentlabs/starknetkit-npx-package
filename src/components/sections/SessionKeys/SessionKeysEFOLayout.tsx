@@ -20,8 +20,8 @@ const SessionKeysEFOLayout: FC<SessionKeysEFOLayoutProps> = ({
   submitText,
   copyText,
 }) => {
-  const copy = () => {
-    navigator.clipboard.writeText(JSON.stringify(copyData))
+  const copy = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(copyData))
     alert(`Data copied in your clipboard`)
   }
 

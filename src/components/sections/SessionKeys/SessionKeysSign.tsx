@@ -18,9 +18,9 @@ import { useState } from "react"
 import { Account, AccountInterface, constants } from "starknet"
 import { SectionLayout } from "../SectionLayout"
 import { ARGENT_SESSION_SERVICE_BASE_URL, provider } from "@/constants"
-import { SessionKeysExecute } from "./Execute/SessionKeysExecute"
-import { SessionKeysExecuteOutside } from "./ExecuteFromOutside/SessionKeysExecuteOutside"
-import { SessionKeysTypedDataOutside } from "./TypedDataExecuteFromOutside/SessionKeysTypedDataOutside"
+import { SessionKeysExecute } from "./SessionKeysExecute"
+import { SessionKeysExecuteOutside } from "./SessionKeysExecuteOutside"
+import { SessionKeysTypedDataOutside } from "./SessionKeysTypedDataOutside"
 import { SessionKeysIcon } from "@/components/icons/SessionKesIcon"
 
 const SessionKeysSign = () => {

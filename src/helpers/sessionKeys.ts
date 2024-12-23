@@ -1,11 +1,6 @@
-import {
-  ARGENT_DUMMY_CONTRACT_ADDRESS,
-  ARGENT_SESSION_SERVICE_BASE_URL,
-  CHAIN_ID,
-  ETHTokenAddress,
-} from "@/constants"
-import { SessionKey } from "@argent/x-sessions"
-import { constants, ec } from "starknet"
+import { ARGENT_DUMMY_CONTRACT_ADDRESS, ETHTokenAddress } from "@/constants"
+import { bytesToHexString, SessionKey } from "@argent/x-sessions"
+import { ec } from "starknet"
 import { parseUnits } from "./token"
 
 /* Hardcoded values for session example */
@@ -29,21 +24,12 @@ const STRKFees = [
   },
 ]
 
-const allowedMethods =
-  CHAIN_ID === constants.NetworkName.SN_MAIN ||
-  ARGENT_SESSION_SERVICE_BASE_URL.includes("staging")
-    ? [
-        {
-          "Contract Address": ARGENT_DUMMY_CONTRACT_ADDRESS,
-          selector: "set_number",
-        },
-      ]
-    : [
-        {
-          "Contract Address": ETHTokenAddress,
-          selector: "transfer",
-        },
-      ]
+const allowedMethods = [
+  {
+    "Contract Address": ARGENT_DUMMY_CONTRACT_ADDRESS,
+    selector: "set_number",
+  },
+]
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const expiry = Math.floor((Date.now() + 1000 * 60 * 60 * 24) / 1000) as any
@@ -56,8 +42,8 @@ const metaData = (isStarkFeeToken: boolean) => ({
 const privateKey = ec.starkCurve.utils.randomPrivateKey()
 
 const sessionKey: SessionKey = {
-  privateKey,
+  privateKey: bytesToHexString(privateKey),
   publicKey: ec.starkCurve.getStarkKey(privateKey),
 }
 
-export { allowedMethods, sessionKey, expiry, metaData }
+export { allowedMethods, expiry, metaData, sessionKey }
