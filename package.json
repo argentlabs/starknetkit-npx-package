@@ -11,7 +11,7 @@
     "template"
   ],
   "bin": {
-    "create-demo-starknetkit-dapp": "./index.js"
+    "create-starknetkit-app": "./index.js"
   },
   "type": "module",
   "engines": {

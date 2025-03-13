@@ -56,13 +56,13 @@ async function main() {
     "dependencies": {
       "@argent/x-sessions": "7.0.0",
       "@starknet-io/get-starknet-core": "4.0.4",
-      "@starknet-react/chains": "^3.1.0",
-      "@starknet-react/core": "^3.5.0",
-      "next": "15.0.2",
+      "@starknet-react/chains": "^3.1.2",
+      "@starknet-react/core": "^3.7.2",
+      "next": "15.2.2",
       "react": "19.0.0-rc-02c0e824-20241028",
       "react-dom": "19.0.0-rc-02c0e824-20241028",
-      "starknet": "^6.11.0",
-      "starknetkit": "2.6.2"
+      "starknet": "^6.23.1",
+      "starknetkit": "^2.8.1-beta-wallet-account.1"
     },
     "devDependencies": {
       "@starknet-io/types-js": "^0.7.7",
