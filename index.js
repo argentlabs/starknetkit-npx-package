@@ -6,11 +6,22 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import inquirer from 'inquirer';
 import { execSync } from 'child_process';
+import { displayVersionInfo } from './scripts/version-info.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+if (args.includes('--check-updates')) {
+  checkForUpdates();
+  process.exit(0);
+}
+
 async function main() {
+  // Display version information
+  displayVersionInfo();
+  
   console.log(chalk.bold.cyan('Creating a new Starknet dApp...'));
 
   const response = await inquirer.prompt([
@@ -79,6 +90,17 @@ async function main() {
     }
   };
 
+  // Get the original package.json to extract the demo version
+  const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+  const demoVersion = packageJson.demoVersion || 'unknown';
+  
+  // Add template metadata to the generated package.json
+  templatePackageJson.templateInfo = {
+    source: "create-demo-starknetkit-app",
+    version: packageJson.version,
+    demoVersion: demoVersion
+  };
+
   fs.writeJsonSync(
     path.join(projectDir, 'package.json'),
     templatePackageJson,
@@ -102,6 +124,51 @@ async function main() {
   console.log(chalk.cyan('\n  cd'), projectName);
   console.log(chalk.cyan('  pnpm dev'));
   console.log('\nHappy hacking!');
+  console.log(chalk.dim(`\nTemplate based on demo-dapp-starknet ${demoVersion.substring(0, 7)}`));
+}
+
+// Function to check for updates
+function checkForUpdates() {
+  console.log(chalk.cyan('Checking for updates to the original demo-dapp-starknet...'));
+  
+  try {
+    // Get the current version from package.json
+    const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    const currentVersion = packageJson.demoVersion || '';
+    
+    // Clone the repo to a temporary directory to check the latest commit
+    const tempDir = path.join(__dirname, 'temp-check');
+    if (fs.existsSync(tempDir)) {
+      fs.removeSync(tempDir);
+    }
+    
+    console.log('Fetching latest version information...');
+    execSync('git clone --depth 1 https://github.com/argentlabs/demo-dapp-starknet.git temp-check', {
+      stdio: 'pipe',
+      cwd: __dirname
+    });
+    
+    const latestVersion = execSync('git rev-parse HEAD', {
+      cwd: path.join(__dirname, 'temp-check')
+    }).toString().trim();
+    
+    // Clean up
+    fs.removeSync(tempDir);
+    
+    if (currentVersion === latestVersion) {
+      console.log(chalk.green('\n✓ Your template is up to date with the latest version!'));
+      console.log(`Current version: ${chalk.cyan(currentVersion.substring(0, 7))}`);
+    } else {
+      console.log(chalk.yellow('\n! Your template is not in sync with the latest version.'));
+      console.log(`Your version:   ${chalk.cyan(currentVersion.substring(0, 7) || 'unknown')}`);
+      console.log(`Latest version: ${chalk.cyan(latestVersion.substring(0, 7))}`);
+      
+      console.log('\nTo update your template, run:');
+      console.log(chalk.cyan('  npm run sync-template'));
+    }
+  } catch (error) {
+    console.error(chalk.red('Error checking for updates:'), error.message);
+  }
 }
 
 main().catch((err) => {

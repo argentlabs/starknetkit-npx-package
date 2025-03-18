@@ -11,12 +11,16 @@
     "template"
   ],
   "bin": {
-    "create-starknetkit-app": "./index.js"
+    "create-demo-starknetkit-app": "./index.js"
   },
   "type": "module",
   "engines": {
     "node": ">=20.x"
   },
+  "scripts": {
+    "sync-template": "node scripts/sync-template.js"
+  },
+  "demoVersion": "cea58e6c021da4fe08cabd80ee2f090fa16c59bd",
   "dependencies": {
     "chalk": "^5.3.0",
     "fs-extra": "^11.2.0",
