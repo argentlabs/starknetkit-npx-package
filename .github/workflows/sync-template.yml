@@ -7,24 +7,30 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          persist-credentials: false
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: pnpm/action-setup@v4
+        name: install-pnpm
+        id: pnpm-install
         with:
-          node-version: '20'
+          version: 9
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'pnpm'
 
       - name: Create scripts directory if it doesn't exist
         run: mkdir -p scripts
 
       - name: Install dependencies
-        run: npm ci || npm install
+        run: pnpm install --frozen-lockfile
 
       - name: Install fs-extra
-        run: npm install fs-extra chalk
+        run: pnpm install fs-extra chalk
 
       - name: Run sync script
         run: node scripts/sync-template.js
