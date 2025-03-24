@@ -28,9 +28,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
-        run: pnpm run build
-
       - name: semantic-release
         run: npx semantic-release --debug true --dry-run false
         env:
